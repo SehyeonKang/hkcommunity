@@ -17,8 +17,8 @@ public class SignUpFormValidator implements Validator {
     }
 
     @Override
-    public void validate(Object target, Errors errors) {
-        SignUpForm signUpForm = (SignUpForm) errors;
+    public void validate(Object object, Errors errors) {
+        SignUpForm signUpForm = (SignUpForm) object;
 
         if (accountRepository.existsByUserId(signUpForm.getUserId())) {
             errors.rejectValue("userId", "invalid userId", new Object[]{signUpForm.getUserId()}, "이미 사용중인 아이디입니다.");

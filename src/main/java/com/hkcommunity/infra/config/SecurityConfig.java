@@ -1,4 +1,4 @@
-package com.hkcommunity.infra.Config;
+package com.hkcommunity.infra.config;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
