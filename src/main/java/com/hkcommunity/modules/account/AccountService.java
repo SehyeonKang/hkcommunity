@@ -3,6 +3,7 @@ package com.hkcommunity.modules.account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +12,7 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final JavaMailSender javaMailSender;
+    private final PasswordEncoder passwordEncoder;
 
     public void processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
@@ -21,10 +23,11 @@ public class AccountService {
     public Account saveNewAccount(SignUpForm signUpForm) {
         Account account = Account.builder()
                 .userId(signUpForm.getUserId())
-                .password(signUpForm.getPassword())
+                .password(passwordEncoder.encode(signUpForm.getPassword()))
                 .nickname(signUpForm.getNickname())
                 .email(signUpForm.getEmail())
                 .build();
+
         return accountRepository.save(account);
     }
 
