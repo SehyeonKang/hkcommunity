@@ -12,7 +12,7 @@ public class SignUpForm {
 
     @NotBlank
     @Length(min = 4, max = 20)
-    @Pattern(regexp = "^[a-z0-9]{4,20}$")
+    @Pattern(regexp = "^[a-zA-Z0-9]{4,20}$")
     private String userId;
 
     @NotBlank
