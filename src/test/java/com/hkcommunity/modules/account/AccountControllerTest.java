@@ -27,8 +27,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class AccountControllerTest {
 
-    @Autowired private MockMvc mockMvc;
-    @Autowired private AccountRepository accountRepository;
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @MockBean
     JavaMailSender javaMailSender;
