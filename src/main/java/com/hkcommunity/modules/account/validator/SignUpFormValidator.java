@@ -1,5 +1,7 @@
-package com.hkcommunity.modules.account;
+package com.hkcommunity.modules.account.validator;
 
+import com.hkcommunity.modules.account.AccountRepository;
+import com.hkcommunity.modules.account.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

@@ -31,6 +31,8 @@ public class Account {
 
     private LocalDateTime joinedAt;
 
+    private String introduction;
+
     private LocalDateTime emailCheckTokenGeneratedAt;
 
     @Lob @Basic(fetch = FetchType.EAGER)

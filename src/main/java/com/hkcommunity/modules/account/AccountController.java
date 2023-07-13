@@ -1,5 +1,7 @@
 package com.hkcommunity.modules.account;
 
+import com.hkcommunity.modules.account.form.SignUpForm;
+import com.hkcommunity.modules.account.validator.SignUpFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

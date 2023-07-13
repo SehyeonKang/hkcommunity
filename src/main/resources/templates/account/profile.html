@@ -13,8 +13,9 @@
       </div>
       <div class="col-8">
         <h1 class="display-4 " th:text="${account.nickname}">userNickname</h1>
-        <p class="lead" th:if="${isOwner}">
-          소개문을 작성해주세요.
+        <p class="lead" th:if="${!#strings.isEmpty(account.introduction)}" th:text="${account.introduction}">introduction</p>
+        <p class="lead" th:if="${#strings.isEmpty(account.introduction) && isOwner}">
+          소개문을 추가하세요.
         </p>
       </div>
     </div>

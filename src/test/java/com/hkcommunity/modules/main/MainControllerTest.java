@@ -2,7 +2,7 @@ package com.hkcommunity.modules.main;
 
 import com.hkcommunity.modules.account.AccountRepository;
 import com.hkcommunity.modules.account.AccountService;
-import com.hkcommunity.modules.account.SignUpForm;
+import com.hkcommunity.modules.account.form.SignUpForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
