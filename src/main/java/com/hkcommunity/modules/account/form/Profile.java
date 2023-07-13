@@ -12,7 +12,10 @@ public class Profile {
     @Length(max = 50)
     private String introduction;
 
+    private String profileImage;
+
     public Profile(Account account) {
         this.introduction = account.getIntroduction();
+        this.profileImage = account.getProfileImage();
     }
 }

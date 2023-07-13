@@ -84,6 +84,14 @@ public class AccountService implements UserDetailsService {
 
     public void updateProfile(Account account, Profile profile) {
         account.setIntroduction(profile.getIntroduction());
+        account.setProfileImage(profile.getProfileImage());
+
+        // account객체는 persistence상태가 아닌 detached상태이므로 persistence context에서 dirty checking이 되지않아 merge해야함
+        accountRepository.save(account);
+    }
+
+    public void updatePassword(Account account, String newPassword) {
+        account.setPassword(passwordEncoder.encode(newPassword));
         accountRepository.save(account);
     }
 }
