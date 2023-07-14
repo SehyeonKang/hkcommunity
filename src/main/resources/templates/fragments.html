@@ -3,7 +3,7 @@
 
 <head th:fragment="head">
     <meta charset="UTF-8">
-    <title>붕괴 커뮤니티</title>
+    <title>빌브이 아틀리에</title>
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css">
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
@@ -48,17 +48,13 @@
             <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    <svg th:if="${#strings.isEmpty(account?.profileImage)}" th:data-jdenticon-value="${account.nickname}"
+                    <svg th:if="${#strings.isEmpty(account?.profileImage)}" th:data-jdenticon-value="${#authentication.name}"
                          width="26" height="26" class="rounded border bg-light"></svg>
                     <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
                          width="26" height="26" class="rounded border"/>
                 </a>
                 <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
-                    <h6 class="dropdown-header">
-                        <span sec:authentication="name">Username</span>
-                    </h6>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" th:href="@{'/profile/' + ${account.nickname}}">프로필</a>
+                    <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
                     <a class="dropdown-item" >글 목록</a>
                     <a class="dropdown-item" >댓글 목록</a>
                     <a class="dropdown-item" >관심글 목록</a>

@@ -6,12 +6,12 @@
 
   <div class="container">
     <div class="py-5 text-center" th:if="${error != null}">
-      <p class="lead">붕괴 커뮤니티 가입</p>
+      <p class="lead">빌브이 아틀리에 가입</p>
       <div  class="alert alert-danger" role="alert" th:text="${error}"></div>
       <p class="lead" th:text="${email}">your@email.com</p>
     </div>
     <div class="py-5 text-center" th:if="${error == null}">
-      <p class="lead">붕괴 커뮤니티 가입</p>
+      <p class="lead">빌브이 아틀리에 가입</p>
       <h2>커뮤니티 서비스를 사용하려면 인증 이메일을 확인하세요.</h2>
       <div>
         <p class="lead" th:text="${email}">your@email.com</p>
