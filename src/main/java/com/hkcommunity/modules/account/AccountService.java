@@ -3,6 +3,7 @@ package com.hkcommunity.modules.account;
 import com.hkcommunity.modules.account.form.Profile;
 import com.hkcommunity.modules.account.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,8 +26,8 @@ public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
-    @Transactional
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
         newAccount.generateEmailCheckToken();
@@ -83,8 +84,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public void updateProfile(Account account, Profile profile) {
-        account.setIntroduction(profile.getIntroduction());
-        account.setProfileImage(profile.getProfileImage());
+        modelMapper.map(profile, account);
 
         // account객체는 persistence상태가 아닌 detached상태이므로 persistence context에서 dirty checking이 되지않아 merge해야함
         accountRepository.save(account);

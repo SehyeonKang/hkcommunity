@@ -24,14 +24,13 @@ public class Account {
     private String userId;
 
     private String password;
+    private String emailCheckToken;
+
+    private String introduction;
 
     private boolean emailVerified;
 
-    private String emailCheckToken;
-
     private LocalDateTime joinedAt;
-
-    private String introduction;
 
     private LocalDateTime emailCheckTokenGeneratedAt;
 
