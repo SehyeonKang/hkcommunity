@@ -130,6 +130,7 @@ public class AccountController {
             return view;
         }
 
+        model.addAttribute(account);
         accountService.login(account);
         return view;
     }

@@ -12,60 +12,94 @@
     <style>
         .container {
             max-width: 100%;
+            text-align: center;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+        .navbar-nav > li{
+            padding-left: 10px;
+            font-weight: bold;
         }
     </style>
 </head>
 
-<nav th:fragment="main-nav" class="navbar navbar-expand-sm navbar-dark bg-dark">
-    <a class="navbar-brand" href="/" th:href="@{/}">
-        <img src="/images/logo_symbol.png" width="50" height="37">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<nav th:fragment="main-nav" class="navbar navbar-expand-md navbar-light border-bottom shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="/" th:href="@{/}">
+            <img src="/images/logo_symbol.png" width="50" height="37">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <form th:action="@{/search/post}" class="form-inline" method="get">
-                    <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="게시글 찾기" aria-label="Search" />
-                </form>
-            </li>
-        </ul>
-        <ul class="navbar-nav justify-content-end">
-            <li class="nav-item" sec:authorize="!isAuthenticated()">
-                <a class="nav-link" th:href="@{/login}">로그인</a>
-            </li>
-            <li class="nav-item" sec:authorize="!isAuthenticated()">
-                <a class="nav-link" th:href="@{/sign-up}">가입</a>
-            </li>
-            <!--<li class="nav-item" sec:authorize="isAuthenticated()">
-                <a class="nav-link" th:href="@{/notifications}">
-                    <i th:if="${!hasNotification}" class="fa fa-bell-o" aria-hidden="true"></i>
-                    <span class="text-info" th:if="${hasNotification}"><i class="fa fa-bell" aria-hidden="true"></i></span>
-                </a>
-            </li>-->
-            <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    <svg th:if="${#strings.isEmpty(account?.profileImage)}" th:data-jdenticon-value="${#authentication.name}"
-                         width="26" height="26" class="rounded border bg-light"></svg>
-                    <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
-                         width="26" height="26" class="rounded border"/>
-                </a>
-                <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
-                    <a class="dropdown-item" >글 목록</a>
-                    <a class="dropdown-item" >댓글 목록</a>
-                    <a class="dropdown-item" >관심글 목록</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" th:href="@{'/settings/profile'}">설정</a>
-                    <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
-                        <button class="dropdown-item" type="submit">로그아웃</button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <!--<li class="nav-item">
+                    <form th:action="@{/search/post}" class="form-inline" method="get">
+                        <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="게시글 찾기" aria-label="Search" />
                     </form>
-                </div>
-            </li>
-        </ul>
+                </li>-->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">홈</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/announcement}">공지사항</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/dimension}">초끈공간</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/arena}">기억전장</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/realm}">과거의 낙원</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="toolDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">유틸리티</a>
+                    <div class="dropdown-menu" aria-labelledby="toolDropdown">
+                        <a class="dropdown-item" th:href="@{/calculator}">패키지 효율 계산기</a>
+                        <a class="dropdown-item" th:href="@{/simulator}">가챠 시뮬레이터</a>
+                    </div>
+                </li>
+            </ul>
+            <!--<ul class="navbar-nav justify-content-end"> -->
+            <form class="navbar-nav ml-auto">
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" th:href="@{/login}">로그인</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" th:href="@{/sign-up}">가입</a>
+                </li>
+                <!--<li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/notifications}">
+                        <i th:if="${!hasNotification}" class="fa fa-bell-o" aria-hidden="true"></i>
+                        <span class="text-info" th:if="${hasNotification}"><i class="fa fa-bell" aria-hidden="true"></i></span>
+                    </a>
+                </li>-->
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <svg th:if="${#strings.isEmpty(account?.profileImage)}" th:data-jdenticon-value="${account.nickname}"
+                             width="26" height="26" class="rounded border bg-light"></svg>
+                        <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}"
+                             width="26" height="26" class="rounded border"/>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" th:href="@{'/profile/' + ${account.nickname}}">프로필</a>
+                        <a class="dropdown-item" >글 목록</a>
+                        <a class="dropdown-item" >댓글 목록</a>
+                        <a class="dropdown-item" >관심글 목록</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" th:href="@{'/settings/profile'}">설정</a>
+                        <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
+                            <button class="dropdown-item" type="submit">로그아웃</button>
+                        </form>
+                    </div>
+                </li>
+            </form>
+        </div>
     </div>
 </nav>
 
