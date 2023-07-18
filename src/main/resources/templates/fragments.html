@@ -4,8 +4,10 @@
 <head th:fragment="head">
     <meta charset="UTF-8">
     <title>빌브이 아틀리에</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.min.css">
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
@@ -13,13 +15,41 @@
         .container {
             max-width: 100%;
         }
+
         .dropdown:hover .dropdown-menu {
             display: block;
             margin-top: 0;
         }
+
         .navbar-nav > li {
             padding-left: 20px;
             font-weight: bold;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+
+        body,
+        input,
+        button,
+        select,
+        optgroup,
+        textarea,
+        .tooltip,
+        .popover {
+            font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+
+        #container{
+            height: auto;
+            min-height: 100%;
+            padding-bottom: 20px;
+        }
+        footer{
+            height: 20px;
+            position : relative;
+            transform : translateY(-100%);
         }
     </style>
 </head>
@@ -101,7 +131,7 @@
 </nav>
 
 <footer th:fragment="footer">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center pt-5">
         <small class="d-block mb-3 text-muted">&copy; 2023</small>
     </div>
 </footer>
