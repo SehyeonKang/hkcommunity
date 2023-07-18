@@ -80,6 +80,10 @@
                              width="26" height="26" class="rounded border"/>
                     </a>
                     <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
+                        <h6 class="dropdown-header">
+                            <span th:text="${account.nickname}">Username</span>
+                        </h6>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" th:href="@{'/profile/' + ${account.nickname}}">프로필</a>
                         <a class="dropdown-item" >글 목록</a>
                         <a class="dropdown-item" >댓글 목록</a>

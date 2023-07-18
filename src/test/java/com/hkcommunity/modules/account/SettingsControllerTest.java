@@ -69,7 +69,7 @@ public class SettingsControllerTest {
                         .param("introduction", introduction)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name(ROOT + SETTINGS + PROFILE))
+                .andExpect(view().name(SETTINGS + PROFILE))
                 .andExpect(model().attributeExists("account"))
                 .andExpect(model().attributeExists("profile"))
                 .andExpect(model().hasErrors());
@@ -113,7 +113,7 @@ public class SettingsControllerTest {
                         .param("newPasswordConfirm", "11113333")
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name(ROOT + SETTINGS + PASSWORD))
+                .andExpect(view().name(SETTINGS + PASSWORD))
                 .andExpect(model().hasErrors())
                 .andExpect(model().attributeExists("account"))
                 .andExpect(model().attributeExists("passwordForm"));
@@ -155,7 +155,7 @@ public class SettingsControllerTest {
                         .param("nickname", newNickname)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name(ROOT + SETTINGS + ACCOUNT))
+                .andExpect(view().name(SETTINGS + ACCOUNT))
                 .andExpect(model().hasErrors())
                 .andExpect(model().attributeExists("account"))
                 .andExpect(model().attributeExists("nicknameForm"));
