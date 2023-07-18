@@ -1,7 +1,7 @@
 package com.hkcommunity.modules.main;
 
 import com.hkcommunity.modules.account.Account;
-import com.hkcommunity.modules.account.CurrentUser;
+import com.hkcommunity.modules.account.CurrentAccount;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 
     @GetMapping("/")
-    public String home(@CurrentUser Account account, Model model) {
+    public String home(@CurrentAccount Account account, Model model) {
         if (account != null) {
             model.addAttribute(account);
         }

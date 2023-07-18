@@ -12,14 +12,13 @@
     <style>
         .container {
             max-width: 100%;
-            text-align: center;
         }
         .dropdown:hover .dropdown-menu {
             display: block;
             margin-top: 0;
         }
-        .navbar-nav > li{
-            padding-left: 10px;
+        .navbar-nav > li {
+            padding-left: 20px;
             font-weight: bold;
         }
     </style>
@@ -27,7 +26,7 @@
 
 <nav th:fragment="main-nav" class="navbar navbar-expand-md navbar-light border-bottom shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="/" th:href="@{/}">
+        <a class="navbar-brand pl-5" href="/" th:href="@{/}">
             <img src="/images/logo_symbol.png" width="50" height="37">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,11 +35,6 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <!--<li class="nav-item">
-                    <form th:action="@{/search/post}" class="form-inline" method="get">
-                        <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="게시글 찾기" aria-label="Search" />
-                    </form>
-                </li>-->
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/}">홈</a>
                 </li>
@@ -64,8 +58,7 @@
                     </div>
                 </li>
             </ul>
-            <!--<ul class="navbar-nav justify-content-end"> -->
-            <form class="navbar-nav ml-auto">
+            <div class="navbar-nav ml-auto pr-5">
                 <li class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="nav-link" th:href="@{/login}">로그인</a>
                 </li>
@@ -98,7 +91,7 @@
                         </form>
                     </div>
                 </li>
-            </form>
+            </div>
         </div>
     </div>
 </nav>
@@ -111,7 +104,7 @@
 
 <div th:fragment="settings-menu (currentMenu)" class="list-group">
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#" th:href="@{/settings/profile}">프로필</a>
-    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" href="#" th:href="@{/settings/password}">패스워드</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" href="#" th:href="@{/settings/password}">비밀번호</a>
     <a class="list-group-item list-group-item-action list-group-item-danger" th:classappend="${currentMenu == 'account'}? active" href="#" th:href="@{/settings/account}">계정</a>
 </div>
 
