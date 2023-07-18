@@ -58,12 +58,10 @@ public class AccountController {
 
         if (!account.isValidToken(token)) {
             model.addAttribute("error", "wrong email");
-            model.addAttribute(account);
             return view;
         }
 
         accountService.completeSignUp(account);
-        model.addAttribute(account);
         model.addAttribute("numberOfUser", accountRepository.count());
         model.addAttribute("nickname", account.getNickname());
         return view;
@@ -71,15 +69,12 @@ public class AccountController {
 
     @GetMapping("/check-email")
     public String checkEmail(@CurrentAccount Account account, Model model) {
-        model.addAttribute(account);
         model.addAttribute("email", account.getEmail());
         return "account/check-email";
     }
 
     @GetMapping("/resend-confirm-email")
     public String resendConfirmEmail(@CurrentAccount Account account, Model model) {
-        model.addAttribute(account);
-
         if (!account.canSendConfirmEmail()) {
             model.addAttribute("error", "인증 이메일은 5분에 한번만 전송 가능합니다.");
             model.addAttribute("email", account.getEmail());
@@ -135,7 +130,6 @@ public class AccountController {
             return view;
         }
 
-        model.addAttribute(account);
         accountService.login(account);
         return view;
     }

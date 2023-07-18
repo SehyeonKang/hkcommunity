@@ -57,7 +57,7 @@ class AccountControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"))
-                .andExpect(authenticated().withUsername("testId"));
+                .andExpect(authenticated().withUsername("testNickname"));
 
         Account account = accountRepository.findByEmail("test@email.com");
         assertNotNull(account);
