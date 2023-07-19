@@ -130,18 +130,30 @@
     </div>
 </nav>
 
-<footer th:fragment="footer">
-    <div class="row justify-content-center pt-5">
-        <small class="d-block mb-3 text-muted">&copy; 2023</small>
-    </div>
-</footer>
-
 <div th:fragment="settings-menu (currentMenu)" class="list-group">
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#" th:href="@{/settings/profile}">프로필</a>
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" href="#" th:href="@{/settings/password}">비밀번호</a>
     <a class="list-group-item list-group-item-action list-group-item-danger" th:classappend="${currentMenu == 'account'}? active" href="#" th:href="@{/settings/account}">계정</a>
 </div>
 
+<div th:fragment="post-info">
+    <div class="row justify-content-center pt-5">
+        <div class="col-sm-8">
+            <div class="card bg-light w-auto">
+                <div class="card-header" th:text="${post.title}">게시글 제목</div>
+                <div class="card-body" style="height: 2rem">
+                    <span class="card-text" th:text="${post.author}">작성자</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:fragment="footer">
+    <div class="row justify-content-center pt-5">
+        <small class="d-block mb-3 text-muted">&copy; 2023</small>
+    </div>
+</footer>
 
 <script type="application/javascript" th:fragment="form-validation">
     // submit 이벤트 발생 시, need-validation 클래스명의 폼에서 검증 후 검증 실패 시, submit이 안되도록 함

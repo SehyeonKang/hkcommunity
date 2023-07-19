@@ -1,13 +1,14 @@
 package com.hkcommunity.modules.post;
 
 import com.hkcommunity.modules.account.Account;
+import com.hkcommunity.modules.account.UserAccount;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @EqualsAndHashCode(of = "id")
+@Getter @Setter @EqualsAndHashCode(of = "id")
 @Builder @AllArgsConstructor @NoArgsConstructor
 public class Post {
 
@@ -28,6 +29,11 @@ public class Post {
     private LocalDateTime modifiedDateTime;
 
     public void addAuthor(Account account) {
+        this.publishedDateTime = LocalDateTime.now();
         this.author = account;
+    }
+
+    public boolean isAuthor(UserAccount userAccount) {
+        return this.author.equals(userAccount.getAccount());
     }
 }

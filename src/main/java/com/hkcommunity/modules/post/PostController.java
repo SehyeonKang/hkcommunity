@@ -3,12 +3,14 @@ package com.hkcommunity.modules.post;
 import com.hkcommunity.modules.account.Account;
 import com.hkcommunity.modules.account.CurrentAccount;
 import com.hkcommunity.modules.post.form.PostForm;
+import com.hkcommunity.modules.post.form.PostResponseForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -18,6 +20,7 @@ import javax.validation.Valid;
 public class PostController {
 
     private final PostService postService;
+    private final PostRepository postRepository;
     private final ModelMapper modelMapper;
 
     @GetMapping("/announcement/write")
@@ -28,12 +31,22 @@ public class PostController {
     }
 
     @PostMapping("/announcement/write")
-    public String newAnnouncementWrite(@CurrentAccount Account account, @Valid PostForm postForm, Errors errors) {
+    public String writeNewAnnouncement(@CurrentAccount Account account, @Valid PostForm postForm, Errors errors, Model model) {
         if (errors.hasErrors()) {
+            model.addAttribute(account);
             return "post/form";
         }
 
         Post newPost = postService.createNewPost(modelMapper.map(postForm, Post.class), account);
-        return "redirect:/announcement";
+        return "redirect:/announcement/" + newPost.getId();
+    }
+
+    @GetMapping("/announcement/{id}")
+    public String viewAnnouncement(@CurrentAccount Account account, @PathVariable Long id, Model model) {
+        PostResponseForm postResponseForm = postService.getPost(id);
+
+        model.addAttribute(account);
+        model.addAttribute("post", postResponseForm);
+        return "post/view";
     }
 }

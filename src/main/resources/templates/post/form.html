@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments.html :: head"></head>
-<body class="bg-light">
+<body>
     <div th:replace="fragments.html :: main-nav"></div>
 
     <div class="container">
@@ -10,7 +10,6 @@
         </div>
         <div class="row justify-content-center">
             <form class="needs-validation col-sm-8" th:action="@{/announcement/write}" th:object="${postForm}" method="post" novalidate>
-
                 <div class="form-group">
                     <label for="title">제목</label>
                     <input id="title" type="text" th:field="*{title}" class="form-control"
