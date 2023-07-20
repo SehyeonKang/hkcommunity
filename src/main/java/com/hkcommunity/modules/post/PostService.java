@@ -55,6 +55,15 @@ public class PostService {
         return post;
     }
 
+    public Post getPostToDelete(Account account, Long postId) {
+        Post post = this.getPost(postId);
+        if (!account.isAuthor(post)) {
+            throw new AccessDeniedException("작성자만 게시글 삭제가 가능합니다.");
+        }
+
+        return post;
+    }
+
     private Post getPost(Long postId) {
         Optional<Post> postWrapped = this.postRepository.findById(postId);
         if (postWrapped == null) {
@@ -67,5 +76,9 @@ public class PostService {
 
     public void updatePost(Post post, PostForm postForm) {
         modelMapper.map(postForm, post);
+    }
+
+    public void deletePost(Post post) {
+        postRepository.delete(post);
     }
 }

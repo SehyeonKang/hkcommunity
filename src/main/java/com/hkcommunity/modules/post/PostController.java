@@ -74,4 +74,19 @@ public class PostController {
         attributes.addFlashAttribute("message", "게시글을 수정했습니다.");
         return "redirect:/announcement/" + id;
     }
+
+    @GetMapping("/announcement/{id}/delete")
+    public String viewAnnouncementDelete(@CurrentAccount Account account, @PathVariable Long id, Model model) {
+        Post post = postService.getPostToDelete(account, id);
+        model.addAttribute(account);
+        model.addAttribute(post);
+        return "post/delete-form";
+    }
+
+    @PostMapping("/announcement/{id}/delete")
+    public String deleteAnnouncement(@CurrentAccount Account account, @PathVariable Long id) {
+        Post post = postService.getPostToDelete(account, id);
+        postService.deletePost(post);
+        return "redirect:/";
+    }
 }

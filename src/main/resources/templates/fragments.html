@@ -176,7 +176,7 @@
                 <div class="card-header" id="titleHeader">
                     <span class="card-text" th:text="${post.title}">게시글 제목</span>
                     <a sec:authorize="isAuthenticated()" th:if="${post.authorChecked == true}">
-                        <span class="card-text" id="postDeleteText">삭제</span>
+                        <span class="card-text" id="postDeleteText" th:onclick="|location.href='/announcement/' + ${post.postNum} + '/delete'|">삭제</span>
                         <span class="card-text" id="postEditText" th:onclick="|location.href='/announcement/' + ${post.postNum} + '/edit'|">수정</span>
                     </a>
                 </div>
