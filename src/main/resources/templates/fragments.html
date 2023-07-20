@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">>
 
 <head th:fragment="head">
     <meta charset="UTF-8">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
@@ -51,6 +53,37 @@
             position : relative;
             transform : translateY(-100%);
         }
+
+        .card-body {
+            height: 1.8rem;
+        }
+
+        #postEditText,
+        #postDeleteText {
+            display: inline-block;
+            cursor: pointer;
+            font-size: small;
+            color: rgb(64, 64, 64);
+            padding-top: 2px;
+            padding-left: 5px;
+            margin-left: 10px;
+            float: right;
+        }
+
+        #postAuthor {
+            display: inline-block;
+            font-size: small;
+            color: rgb(96, 96, 96);
+            float: left;
+        }
+
+        #postPublishedTime {
+            display: inline-block;
+            font-size: small;
+            color: rgb(96, 96, 96);
+            float: right;
+        }
+
     </style>
 </head>
 
@@ -139,10 +172,17 @@
 <div th:fragment="post-info">
     <div class="row justify-content-center pt-5">
         <div class="col-sm-8">
-            <div class="card bg-light w-auto">
-                <div class="card-header" th:text="${post.title}">게시글 제목</div>
-                <div class="card-body" style="height: 2rem">
-                    <span class="card-text" th:text="${post.author}">작성자</span>
+            <div class="card bg-light py-0">
+                <div class="card-header" id="titleHeader">
+                    <span class="card-text" th:text="${post.title}">게시글 제목</span>
+                    <a sec:authorize="isAuthenticated()" th:if="${post.authorChecked == true}">
+                        <span class="card-text" id="postDeleteText">삭제</span>
+                        <span class="card-text" id="postEditText" th:onclick="|location.href='/announcement/' + ${post.postNum} + '/edit'|">수정</span>
+                    </a>
+                </div>
+                <div class="card-body my-1 py-1">
+                    <span class="card-text" id="postAuthor" th:text="${post.author}">작성자</span>
+                    <span class="card-text" id="postPublishedTime"th:text="${post.publishedDateTime}">게시일</span>
                 </div>
             </div>
         </div>
@@ -174,5 +214,26 @@
         }, false)
     }())
 </script>
+
+<div th:fragment="editor-script">
+    <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            $('#content').summernote({
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
+                placeholder: '내용을 입력해주세요.',
+                tabsize: 2,
+                height: 600
+            });
+        });
+    </script>
+</div>
+
+<div th:fragment="message" th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+    <span th:text="${message}">완료</span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 
 </html>

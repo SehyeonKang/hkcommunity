@@ -101,6 +101,14 @@ public class AccountService implements UserDetailsService {
         login(account);
     }
 
+    public Account getAccount(String nickname) {
+        Account account = accountRepository.findByNickname(nickname);
+        if (account == null) {
+            throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+        }
+        return account;
+    }
+
     public void updateProfile(Account account, Profile profile) {
         modelMapper.map(profile, account);
 

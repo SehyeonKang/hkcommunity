@@ -12,13 +12,17 @@ import java.time.LocalDateTime;
 @Builder
 public class PostResponseForm {
 
+    private Long postNum;
+
     private String author;
 
     private String title;
 
     private String content;
 
-    private LocalDateTime publishedDateTime;
+    private String publishedDateTime;
+
+    private boolean authorChecked;
 
     private LocalDateTime modifiedDateTime;
 

@@ -1,5 +1,6 @@
 package com.hkcommunity.modules.account;
 
+import com.hkcommunity.modules.post.Post;
 import lombok.*;
 
 import javax.persistence.*;
@@ -53,5 +54,9 @@ public class Account {
 
     public boolean canSendConfirmEmail() {
         return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusMinutes(5));
+    }
+
+    public boolean isAuthor(Post post) {
+        return post.getAuthor().equals(this);
     }
 }

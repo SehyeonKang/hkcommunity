@@ -27,23 +27,13 @@
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">게시글 작성</button>
+                    <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">등록</button>
                 </div>
             </form>
         </div>
     </div>
     <div th:replace="fragments.html :: footer"></div>
     <script th:replace="fragments.html :: form-validation"></script>
-    <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
-    <script type="application/javascript">
-        $(function () {
-            $('#content').summernote({
-                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
-                placeholder: '내용을 입력해주세요.',
-                tabsize: 2,
-                height: 600
-            });
-        });
-    </script>
+    <script th:replace="fragments.html :: editor-script"></script>
 </body>
 </html>
