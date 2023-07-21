@@ -1,7 +1,6 @@
 package com.hkcommunity.modules.account;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Table(name = "persistent_logins")
 @Entity
-@Getter @Setter
+@Getter
 public class PersistentLogins {
 
     @Id

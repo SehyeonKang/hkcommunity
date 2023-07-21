@@ -38,8 +38,8 @@ public class PostService {
                 .author(post.getAuthor().getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
+                .viewCount(post.getViewCount())
                 .publishedDateTime(convertedPublishedDateTime)
-                .modifiedDateTime(post.getModifiedDateTime())
                 .authorChecked(authorCheck)
                 .build();
 
@@ -81,4 +81,6 @@ public class PostService {
     public void deletePost(Post post) {
         postRepository.delete(post);
     }
+
+
 }

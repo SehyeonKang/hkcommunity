@@ -3,13 +3,17 @@ package com.hkcommunity.modules.post;
 import com.hkcommunity.modules.account.Account;
 import com.hkcommunity.modules.account.UserAccount;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter @EqualsAndHashCode(of = "id")
+@Getter @EqualsAndHashCode(of = "id")
 @Builder @AllArgsConstructor @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Post {
 
     @Id @GeneratedValue
@@ -24,13 +28,21 @@ public class Post {
     @Lob @Basic(fetch = FetchType.EAGER)
     private String content;
 
+    private Long viewCount;
+
+    private Long likeCount;
+
+    @CreatedDate
     private LocalDateTime publishedDateTime;
 
+    @LastModifiedDate
     private LocalDateTime modifiedDateTime;
 
     public void addAuthor(Account account) {
         this.publishedDateTime = LocalDateTime.now();
         this.author = account;
+        this.viewCount = 0L;
+        this.likeCount = 0L;
     }
 
     public boolean isAuthor(UserAccount userAccount) {

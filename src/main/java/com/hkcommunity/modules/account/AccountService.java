@@ -117,12 +117,12 @@ public class AccountService implements UserDetailsService {
     }
 
     public void updatePassword(Account account, String newPassword) {
-        account.setPassword(passwordEncoder.encode(newPassword));
+        account.updatePassword(passwordEncoder.encode(newPassword));
         accountRepository.save(account);
     }
 
     public void updateNickname(Account account, String nickname) {
-        account.setNickname(nickname);
+        account.updateNickname(nickname);
         accountRepository.save(account);
         login(account);
     }
