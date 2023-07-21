@@ -2,10 +2,13 @@ package com.hkcommunity.modules.post;
 
 import com.hkcommunity.modules.account.Account;
 import com.hkcommunity.modules.account.CurrentAccount;
+import com.hkcommunity.modules.post.form.BoardResponseForm;
 import com.hkcommunity.modules.post.form.PostForm;
 import com.hkcommunity.modules.post.form.PostResponseForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -21,6 +24,7 @@ import javax.validation.Valid;
 public class PostController {
 
     private final PostService postService;
+    private final CustomPostRepository customPostRepository;
     private final ModelMapper modelMapper;
 
     @GetMapping("/announcement/write")
@@ -88,5 +92,20 @@ public class PostController {
         Post post = postService.getPostToDelete(account, id);
         postService.deletePost(post);
         return "redirect:/";
+    }
+
+    @GetMapping("/announcement")
+    public String viewAnnouncementList(String search, Pageable pageable, Model model) {
+        Page<BoardResponseForm> result = customPostRepository.selectPostList(search, pageable);
+        model.addAttribute("list", result);
+        model.addAttribute("maxPage", 5);
+        pageModelSetting(result, model);
+        return "post/list";
+    }
+
+    private void pageModelSetting(Page<BoardResponseForm> result, Model model) {
+        model.addAttribute("totalCount", result.getTotalElements());
+        model.addAttribute("size", result.getPageable().getPageSize());
+        model.addAttribute("number", result.getPageable().getPageNumber());
     }
 }
