@@ -2,6 +2,7 @@ package com.hkcommunity.modules.post;
 
 import com.hkcommunity.modules.post.form.BoardResponseForm;
 import com.hkcommunity.modules.post.form.QBoardResponseForm;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,22 +24,23 @@ public class PostRepositoryImpl implements CustomPostRepository{
 
 
     @Override
-    public Page<BoardResponseForm> selectPostList(String search, Pageable pageable) {
-        List<BoardResponseForm> content = getPostList(search, pageable);
-        Long count = getCount(search);
+    public Page<BoardResponseForm> selectPostList(String searchKeyword, Pageable pageable) {
+        List<BoardResponseForm> content = getPostList(searchKeyword, pageable);
+        Long count = getCount(searchKeyword);
         return new PageImpl<>(content, pageable, count);
     }
 
-    private Long getCount(String search) {
+    private Long getCount(String searchKeyword) {
         Long count = jpaQueryFactory
                 .select(post.count())
                 .from(post)
+                .where(containsSearchKeyword(searchKeyword))
                 .fetchOne();
 
         return count;
     }
 
-    private List<BoardResponseForm> getPostList(String search, Pageable pageable) {
+    private List<BoardResponseForm> getPostList(String searchKeyword, Pageable pageable) {
         List<BoardResponseForm> content = jpaQueryFactory
                 .select(new QBoardResponseForm(
                     post.id,
@@ -49,11 +51,16 @@ public class PostRepositoryImpl implements CustomPostRepository{
                         post.publishedDateTime))
                 .from(post)
                 .leftJoin(post.author, account)
+                .where(containsSearchKeyword(searchKeyword))
                 .orderBy(post.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         return content;
+    }
+
+    private BooleanExpression containsSearchKeyword(String searchKeyword) {
+        return searchKeyword != null ? post.title.contains(searchKeyword) : null;
     }
 }

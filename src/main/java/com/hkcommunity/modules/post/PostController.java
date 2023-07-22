@@ -95,10 +95,11 @@ public class PostController {
     }
 
     @GetMapping("/announcement")
-    public String viewAnnouncementList(String search, Pageable pageable, Model model) {
-        Page<BoardResponseForm> result = customPostRepository.selectPostList(search, pageable);
+    public String viewAnnouncementList(String searchKeyword, Pageable pageable, Model model) {
+        Page<BoardResponseForm> result = customPostRepository.selectPostList(searchKeyword, pageable);
         model.addAttribute("list", result);
         model.addAttribute("maxPage", 5);
+        model.addAttribute("searchKeyword", searchKeyword);
         pageModelSetting(result, model);
         return "post/list";
     }
@@ -107,5 +108,6 @@ public class PostController {
         model.addAttribute("totalCount", result.getTotalElements());
         model.addAttribute("size", result.getPageable().getPageSize());
         model.addAttribute("number", result.getPageable().getPageNumber());
+        model.addAttribute("totalPages", result.getTotalPages());
     }
 }
