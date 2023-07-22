@@ -33,6 +33,8 @@ public class PostService {
         String convertedPublishedDateTime = post.getPublishedDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         boolean authorCheck = post.isAuthor(new UserAccount(account));
 
+        post.updateViewCount(post.getViewCount());
+
         PostResponseForm postResponseForm = PostResponseForm.builder()
                 .postNum(post.getId())
                 .author(post.getAuthor().getNickname())

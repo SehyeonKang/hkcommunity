@@ -48,4 +48,9 @@ public class Post {
     public boolean isAuthor(UserAccount userAccount) {
         return this.author.equals(userAccount.getAccount());
     }
+
+    public Post updateViewCount(Long viewCount) {
+        this.viewCount = viewCount + 1;
+        return this;
+    }
 }
