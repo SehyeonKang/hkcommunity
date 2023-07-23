@@ -2,6 +2,7 @@ package com.hkcommunity.modules.post;
 
 import com.hkcommunity.modules.account.Account;
 import com.hkcommunity.modules.account.UserAccount;
+import com.hkcommunity.modules.like.LikeRepository;
 import com.hkcommunity.modules.post.form.PostForm;
 import com.hkcommunity.modules.post.form.PostResponseForm;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final LikeRepository likeRepository;
     private final ModelMapper modelMapper;
 
     public Post createNewPost(Post post, Account account) {
@@ -27,13 +29,13 @@ public class PostService {
         return newPost;
     }
 
-    public PostResponseForm getPost(Long id, Account account) {
+    public PostResponseForm getPostResponseForm(Long id, Account account) {
         Optional<Post> postWrapper = postRepository.findById(id);
         Post post = postWrapper.get();
         String convertedPublishedDateTime = post.getPublishedDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         boolean authorCheck = post.isAuthor(new UserAccount(account));
 
-        post.updateViewCount(post.getViewCount());
+        post.plusViewCount(post.getViewCount());
 
         PostResponseForm postResponseForm = PostResponseForm.builder()
                 .postNum(post.getId())
@@ -66,7 +68,7 @@ public class PostService {
         return post;
     }
 
-    private Post getPost(Long postId) {
+    public Post getPost(Long postId) {
         Optional<Post> postWrapped = this.postRepository.findById(postId);
         if (postWrapped == null) {
             throw new IllegalArgumentException(postId + "에 해당하는 게시글이 없습니다.");
@@ -83,6 +85,5 @@ public class PostService {
     public void deletePost(Post post) {
         postRepository.delete(post);
     }
-
 
 }

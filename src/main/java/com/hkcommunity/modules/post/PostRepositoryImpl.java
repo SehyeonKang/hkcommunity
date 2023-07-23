@@ -63,4 +63,6 @@ public class PostRepositoryImpl implements CustomPostRepository{
     private BooleanExpression containsSearchKeyword(String searchKeyword) {
         return searchKeyword != null ? post.title.contains(searchKeyword) : null;
     }
+
+
 }

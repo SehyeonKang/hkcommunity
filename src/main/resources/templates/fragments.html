@@ -79,7 +79,8 @@
         }
 
         #postPublishedTime,
-        #postViewCount {
+        #postViewCount,
+        #postLikeCount {
             display: inline-block;
             font-size: small;
             color: rgb(96, 96, 96);
@@ -203,8 +204,9 @@
                 </div>
                 <div class="card-body my-1 py-1">
                     <span class="card-text" id="postAuthor" th:text="${post.author}">작성자</span>
-                    <span class="card-text" id="postViewCount"th:text="${post.viewCount}">조회수</span>
-                    <span class="card-text" id="postPublishedTime"th:text="${post.publishedDateTime}">게시일</span>
+                    <span class="card-text" id="postLikeCount" th:text="${likeCount}">좋아요 수</span>
+                    <span class="card-text" id="postViewCount" th:text="${post.viewCount}">조회수</span>
+                    <span class="card-text" id="postPublishedTime" th:text="${post.publishedDateTime}">게시일</span>
                 </div>
             </div>
         </div>
@@ -238,7 +240,7 @@
                 <tbody>
                 <tr th:each="list, index : ${list}">
                     <td id="postNumOnBoard" th:text="${totalCount - (size * number) - index.index}">번호</td>
-                    <td><a id="postTitleOnBoard" th:text="${list.title}" th:onclick="|location.href='/announcement/' + ${list.id}|">제목</a></td>
+                    <td id="postTitleOnBoard" th:text="${list.title}" th:onclick="|location.href='/announcement/' + ${list.id}|">제목</td>
                     <td id="postAuthorOnBoard" th:text="${list.author}">작성자</td>
                     <td id="postPublishedOnBoard" th:text="${#temporals.format(list.publishedDateTime, 'yyyy-MM-dd')}">작성일</td>
                     <td id="postViewOnBoard" th:text="${list.viewCount}">조회수</td>
@@ -297,6 +299,35 @@
     </nav>
 </div>
 
+<div th:fragment="like-button">
+    <div class="row px-1 justify-content-center">
+        <form class="form-inline" action="#" th:action="@{'/like/' + ${post.postNum}}" method="post">
+            <button type="submit" class="btn btn-outline-danger" id="likePost" th:if="${!likeCheck}" sec:authorize="isAuthenticated()">
+                <svg width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" style="margin-bottom: 3px">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"></path>
+                </svg>
+                <a th:text="${likeCount}" style="margin-left: 3px">추천 수</a>
+            </button>
+        </form>
+
+        <form class="form-inline" action="#" th:action="@{'/like/' + ${post.postNum}}" method="post">
+            <button type="submit" class="btn btn-outline-danger active" id="alreadyLiked" aria-pressed="true" th:if="${likeCheck}" sec:authorize="isAuthenticated()">
+                <svg width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" style="margin-bottom: 3px">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"></path>
+                </svg>
+                <a th:text="${likeCount}" style="margin-left: 3px">추천 수</a>
+            </button>
+        </form>
+
+        <button type="button" class="btn btn-outline-danger" id="likeLoginCheck" sec:authorize="!isAuthenticated()">
+            <svg width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" style="margin-bottom: 3px">
+                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"></path>
+            </svg>
+            <a th:text="${likeCount}" style="margin-left: 3px">추천 수</a>
+        </button>
+    </div>
+</div>
+
 <footer th:fragment="footer">
     <div class="row justify-content-center pt-5">
         <small class="d-block mb-3 text-muted">&copy; 2023</small>
@@ -336,6 +367,13 @@
         });
     </script>
 </div>
+
+<script th:fragment="like-check">
+    /** 로그인하지 않은 유저가 좋아요 누를 때 **/
+    $('#likeLoginCheck').click(function(){
+        alert("로그인 후 이용할 수 있습니다.");
+    });
+</script>
 
 <div th:fragment="message" th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
     <span th:text="${message}">완료</span>

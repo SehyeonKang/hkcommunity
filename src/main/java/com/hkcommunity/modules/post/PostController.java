@@ -2,6 +2,9 @@ package com.hkcommunity.modules.post;
 
 import com.hkcommunity.modules.account.Account;
 import com.hkcommunity.modules.account.CurrentAccount;
+import com.hkcommunity.modules.like.LikeService;
+import com.hkcommunity.modules.like.form.LikeForm;
+import com.hkcommunity.modules.like.form.LikeResponseForm;
 import com.hkcommunity.modules.post.form.BoardResponseForm;
 import com.hkcommunity.modules.post.form.PostForm;
 import com.hkcommunity.modules.post.form.PostResponseForm;
@@ -24,7 +27,8 @@ import javax.validation.Valid;
 public class PostController {
 
     private final PostService postService;
-    private final CustomPostRepository customPostRepository;
+    private final LikeService likeService;
+    private final PostRepository postRepository;
     private final ModelMapper modelMapper;
 
     @GetMapping("/announcement/write")
@@ -47,10 +51,16 @@ public class PostController {
 
     @GetMapping("/announcement/{id}")
     public String viewAnnouncement(@CurrentAccount Account account, @PathVariable Long id, Model model) {
-        PostResponseForm postResponseForm = postService.getPost(id, account);
+        Post post = postService.getPost(id);
+        PostResponseForm postResponseForm = postService.getPostResponseForm(id, account);
+        LikeResponseForm likeResponseForm = likeService.getLikeInfo(new LikeForm(account, post));
+        boolean pushedCheck = likeResponseForm.isPushedCheck();
+        Long likeCount = likeResponseForm.getPostLikeNum();
 
         model.addAttribute(account);
         model.addAttribute("post", postResponseForm);
+        model.addAttribute("likeCheck", pushedCheck);
+        model.addAttribute("likeCount", likeCount);
         return "post/view";
     }
 
@@ -91,12 +101,12 @@ public class PostController {
     public String deleteAnnouncement(@CurrentAccount Account account, @PathVariable Long id) {
         Post post = postService.getPostToDelete(account, id);
         postService.deletePost(post);
-        return "redirect:/";
+        return "redirect:/announcement";
     }
 
     @GetMapping("/announcement")
     public String viewAnnouncementList(String searchKeyword, Pageable pageable, Model model) {
-        Page<BoardResponseForm> result = customPostRepository.selectPostList(searchKeyword, pageable);
+        Page<BoardResponseForm> result = postRepository.selectPostList(searchKeyword, pageable);
         model.addAttribute("list", result);
         model.addAttribute("maxPage", 5);
         model.addAttribute("searchKeyword", searchKeyword);
