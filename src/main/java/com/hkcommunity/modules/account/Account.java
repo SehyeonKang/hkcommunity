@@ -5,7 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter @EqualsAndHashCode(of = "id")
@@ -37,6 +37,23 @@ public class Account {
 
     @Lob @Basic(fetch = FetchType.EAGER)
     private String profileImage;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "author")
+    private List<Post> posts = new ArrayList<>();
+
+    public Account(String email, String nickname, String userId, String password) {
+        this.email = email;
+        this.nickname = nickname;
+        this.userId = userId;
+        this.password = password;
+        this.emailCheckToken = UUID.randomUUID().toString();
+        this.introduction = null;
+        this.emailVerified = false;
+        this.joinedAt = LocalDateTime.now();
+        this.emailCheckTokenGeneratedAt = LocalDateTime.now();
+        this.profileImage = null;
+    }
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();

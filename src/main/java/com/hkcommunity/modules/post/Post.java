@@ -27,7 +27,7 @@ public class Post {
     private Account author;
 
     @Builder.Default
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post")
     Set<Like> likes = new HashSet<>();
 
     private String title;
@@ -44,6 +44,14 @@ public class Post {
 
     @LastModifiedDate
     private LocalDateTime modifiedDateTime;
+
+    public Post(String title, String content, Account author) {
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.viewCount = 0L;
+        this.likeCount = 0L;
+    }
 
     public void addAuthor(Account account) {
         this.publishedDateTime = LocalDateTime.now();

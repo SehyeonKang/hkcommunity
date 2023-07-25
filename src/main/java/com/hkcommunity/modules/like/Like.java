@@ -6,8 +6,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
 @Table(name = "likes")
+@Entity
 @Getter @EqualsAndHashCode(of = "id")
 @AllArgsConstructor @NoArgsConstructor
 public class Like {

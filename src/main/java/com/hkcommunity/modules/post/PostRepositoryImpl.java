@@ -43,7 +43,7 @@ public class PostRepositoryImpl implements CustomPostRepository{
     private List<BoardResponseForm> getPostList(String searchKeyword, Pageable pageable) {
         List<BoardResponseForm> content = jpaQueryFactory
                 .select(new QBoardResponseForm(
-                    post.id,
+                        post.id,
                         post.viewCount,
                         post.likeCount,
                         post.title,

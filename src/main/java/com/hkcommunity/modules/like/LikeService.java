@@ -26,13 +26,11 @@ public class LikeService {
                             post.minusLikeCount(post.getLikeCount());
                             post.minusViewCount(post.getViewCount());
                             likeRepository.deleteById(like.getId());
-                            //postRepository.save(post);
                         }, () -> {
                             Post post = getPostByLikeForm(likeForm);
                             post.plusLikeCount(post.getLikeCount());
                             post.minusViewCount(post.getViewCount());
                             likeRepository.save(new Like(likeForm.getAccount(), post));
-                            //postRepository.save(post);
                         });
 
         return true;
