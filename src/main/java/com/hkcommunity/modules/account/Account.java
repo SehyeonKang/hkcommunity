@@ -12,7 +12,7 @@ import java.util.*;
 @Builder @AllArgsConstructor @NoArgsConstructor
 public class Account {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)

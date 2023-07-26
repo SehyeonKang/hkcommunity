@@ -19,7 +19,7 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     //즉시로딩(EAGER)은 예측이 어렵고, 어떤 SQL이 실행되는지 추적하기가 어려움

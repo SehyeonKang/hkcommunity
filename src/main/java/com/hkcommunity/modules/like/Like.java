@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor @NoArgsConstructor
 public class Like {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
