@@ -88,7 +88,6 @@
 
           // 1. 조회된 데이터가 없는 경우
           if (!response.result.data.length) {
-            document.querySelector('.cm_list').innerHTML = '<div class="cm_none"><p>등록된 댓글이 없습니다.</p></div>';
             return false;
           }
 
@@ -102,16 +101,19 @@
                                   <div class="card-header bg-light">
                                       <span class="comment-writer"><span class="card-text">${row.account.nickname}</span></span>
                                       <a sec:authorize="isAuthenticated()" th:if="${row.account.id == accountId}">
-                                          <a class="comment-delete"><i class="bi bi-trash3"></i><span class="card-text ml-1">삭제</span></a>
-                                          <a class="comment-edit"><i class="fa fa-pencil"></i><span class="card-text ml-1">수정</span></a>
+                                          <a class="comment-delete" onclick="deleteComment(${row.id});"><i class="bi bi-trash3"></i><span class="card-text ml-1">삭제</span></a>
+                                          <a class="comment-edit" onclick="findEditComment(${row.id});"><i class="fa fa-pencil"></i><span class="card-text ml-1">수정</span></a>
                                       </a>
                                       <a class="comment-reply"><i class="fa fa-comment fa"></i><span class="card-text ml-1">답글</span></a>
                                       <span class="date" id="commentDate">${dayjs(row.createdDateTime).format('YYYY-MM-DD HH:mm')}</span>
                                   </div>
                                   <div class="card-body">
-                                      <span class="comment-content"><span class="card-text" th:id="'commentContent' + ${row.id}">${row.content}</span></span>
+                                      <span class="comment-content"><span class="card-text">${row.content}</span></span>
                                   </div>
                               </div>
+
+                              <!--/* 댓글 수정 뷰 */-->
+                              <div id="cm_edit_view${row.id}"></div>
                             `;
           })
 
@@ -161,10 +163,121 @@
           findAllComment();
 
           console.log(response);
-          console.log(JSON.stringify(params));
         },
         error: function (request, status, error) {
           console.log(error);
+        }
+      })
+    }
+
+    // 수정할 댓글 조회
+    function findEditComment(commentId) {
+
+      var idForInnerHtml = '#cm_edit_view' + commentId;
+
+      $.ajax({
+        url: `/api/comments/${commentId}`,
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader(header, token);
+        },
+        type: 'get',
+        dataType: 'json',
+        async: false,
+        success: function (response) {
+
+          const comment = response.result.data;
+          console.log(response);
+
+          // 1. 조회된 데이터가 없는 경우
+          if (comment.length == 0) {
+            return false;
+          }
+
+          // 2. 댓글 HTML 추가
+          let commentHtml = `
+                              <div class="card py-0 mt-3">
+                                <div class="card-header bg-light">
+                                  <i class="bi bi-pencil-square"></i>
+                                  <span class="ml-2">댓글 수정</span>
+                                  <span class="comment-writer ml-3" id="editCommentWriter"><span class="card-text">${comment.account.nickname}</span></span>
+                                </div>
+                                <div class="card-body" id="editCommentCardBody">
+                                  <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                      <fieldset>
+                                        <div class="cm_input">
+                                          <p><textarea class="form-control" id="editContent" name="reply_content"
+                                                       onkeyup="countingLength(this);" rows="3">${comment.content}</textarea></p>
+                                          <div class="d-flex justify-content-end">
+                                            <button type="button" class="btn btn-dark" onclick="editComment(${comment.id});">수정</button>
+                                          </div>
+                                        </div>
+                                      </fieldset>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            `;
+
+          // 3. id가 "'cm_edit_view' + commentId"인 요소를 찾아 HTML을 렌더링
+          document.querySelector(idForInnerHtml).innerHTML = commentHtml;
+        },
+        error: function (request, status, error) {
+          console.log(error)
+        }
+      })
+    }
+
+    // 댓글 수정
+    function editComment(commentId) {
+
+      const content = document.getElementById('editContent');
+      const params = {
+        content: content.value
+      }
+
+      $.ajax({
+        url: `/api/comments/${commentId}`,
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader(header, token);
+        },
+        type: 'patch',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify(params),
+        async: false,
+        success: function (response) {
+          findAllComment();
+          console.log(response);
+        },
+        error: function (request, status, error) {
+          console.log(error);
+        }
+      })
+    }
+
+    // 댓글 삭제
+    function deleteComment(id) {
+
+      if (!confirm('선택하신 댓글을 삭제할까요?') ) {
+        return false;
+      }
+
+      $.ajax({
+        url : `/api/comments/${id}`,
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader(header, token);
+        },
+        type : 'delete',
+        dataType : 'json',
+        async : false,
+        success : function (response) {
+          alert('삭제되었습니다.');
+          console.log(response);
+          findAllComment();
+        },
+        error : function (request, status, error) {
+          console.log(error)
         }
       })
     }

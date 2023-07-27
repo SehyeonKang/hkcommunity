@@ -21,6 +21,12 @@ public class CommentController {
         return Response.success(commentService.readAll(postId));
     }
 
+    @GetMapping("/api/comments/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response readOne(@PathVariable Long id) {
+        return Response.success(commentService.readOne(id));
+    }
+
     @PostMapping("/api/comments")
     @ResponseStatus(HttpStatus.CREATED)
     public Response create(@Valid @RequestBody CommentCreateRequest request) {
@@ -28,7 +34,7 @@ public class CommentController {
         return Response.success();
     }
 
-    @PutMapping("/api/comments/{id}")
+    @PatchMapping("/api/comments/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Response update(@PathVariable Long id, @Valid @RequestBody CommentUpdateRequest request) {
         commentService.update(id, request);

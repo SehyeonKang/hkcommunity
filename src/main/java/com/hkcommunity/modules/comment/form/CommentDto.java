@@ -6,6 +6,7 @@ import com.hkcommunity.infra.helper.NestedConvertHelper;
 import com.hkcommunity.modules.account.form.AccountDto;
 import com.hkcommunity.modules.comment.Comment;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @AllArgsConstructor
