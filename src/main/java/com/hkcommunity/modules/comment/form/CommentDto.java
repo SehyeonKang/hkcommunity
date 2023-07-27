@@ -23,8 +23,8 @@ public class CommentDto {
     private String content;
     private AccountDto account;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime createDateTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime createdDateTime;
     private List<CommentDto> children;
 
     public static List<CommentDto> toDtoList(List<Comment> comments) {

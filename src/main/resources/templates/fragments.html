@@ -5,6 +5,8 @@
 
 <head th:fragment="head">
     <meta charset="UTF-8">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
     <title>빌브이 아틀리에</title>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
@@ -14,6 +16,7 @@
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
+    <script src="/node_modules/dayjs/dayjs.min.js"></script>
     <style>
         .container {
             max-width: 100%;
@@ -55,12 +58,16 @@
             transform : translateY(-100%);
         }
 
-        .card-body {
+        #postInfoCardBody {
             height: 1.8rem;
         }
 
         #postEditText,
-        #postDeleteText {
+        #postDeleteText,
+        #commentDate,
+        .comment-edit,
+        .comment-delete,
+        .comment-reply {
             display: inline-block;
             cursor: pointer;
             font-size: small;
@@ -104,6 +111,15 @@
         }
 
         #postTitleOnBoard, #postAuthorOnBoard {
+            font-size: small;
+        }
+
+        #writeCommentCardBody {
+            height: 11.5rem;
+        }
+
+        .comment-writer,
+        .comment-content {
             font-size: small;
         }
     </style>
@@ -198,11 +214,11 @@
                 <div class="card-header" id="titleHeader">
                     <span class="card-text" th:text="${post.title}">게시글 제목</span>
                     <a sec:authorize="isAuthenticated()" th:if="${post.authorChecked == true}">
-                        <span class="card-text" id="postDeleteText" th:onclick="|location.href='/announcement/' + ${post.postNum} + '/delete'|">삭제</span>
-                        <span class="card-text" id="postEditText" th:onclick="|location.href='/announcement/' + ${post.postNum} + '/edit'|">수정</span>
+                        <span class="card-text" id="postDeleteText" th:onclick="|location.href='/announcement/' + ${post.id} + '/delete'|">삭제</span>
+                        <span class="card-text" id="postEditText" th:onclick="|location.href='/announcement/' + ${post.id} + '/edit'|">수정</span>
                     </a>
                 </div>
-                <div class="card-body my-1 py-1">
+                <div class="card-body my-1 py-1" id="postInfoCardBody">
                     <span class="card-text" id="postAuthor" th:text="${post.author}">작성자</span>
                     <span class="card-text" id="postLikeCount" th:text="${likeCount}">좋아요 수</span>
                     <span class="card-text" id="postViewCount" th:text="${post.viewCount}">조회수</span>
@@ -301,7 +317,7 @@
 
 <div th:fragment="like-button">
     <div class="row px-1 justify-content-center">
-        <form class="form-inline" action="#" th:action="@{'/like/' + ${post.postNum}}" method="post">
+        <form class="form-inline" action="#" th:action="@{'/like/' + ${post.id}}" method="post">
             <button type="submit" class="btn btn-outline-danger" id="likePost" th:if="${!likeCheck}" sec:authorize="isAuthenticated()">
                 <svg width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" style="margin-bottom: 3px">
                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"></path>
@@ -310,7 +326,7 @@
             </button>
         </form>
 
-        <form class="form-inline" action="#" th:action="@{'/like/' + ${post.postNum}}" method="post">
+        <form class="form-inline" action="#" th:action="@{'/like/' + ${post.id}}" method="post">
             <button type="submit" class="btn btn-outline-danger active" id="alreadyLiked" aria-pressed="true" th:if="${likeCheck}" sec:authorize="isAuthenticated()">
                 <svg width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16" style="margin-bottom: 3px">
                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"></path>

@@ -58,7 +58,7 @@ class CommentServiceTest extends AbstractContainerBaseTest {
                 );
 
         // when
-        List<CommentDto> result = commentService.readAll(createCommentReadCondition());
+        List<CommentDto> result = commentService.readAll(createCommentReadCondition().getPostId());
 
         // then
         assertThat(result.size()).isEqualTo(2);
@@ -75,7 +75,7 @@ class CommentServiceTest extends AbstractContainerBaseTest {
                 );
 
         // when
-        List<CommentDto> result = commentService.readAll(createCommentReadCondition());
+        List<CommentDto> result = commentService.readAll(createCommentReadCondition().getPostId());
 
         // then
         assertThat(result.size()).isEqualTo(2);

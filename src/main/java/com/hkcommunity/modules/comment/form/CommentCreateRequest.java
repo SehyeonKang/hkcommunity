@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Positive;
 import java.util.Optional;
 
@@ -34,7 +33,6 @@ public class CommentCreateRequest {
     private Long postId;
 
     @ApiModelProperty(hidden = true)
-    @Null
     private Long accountId;
 
     @ApiModelProperty(value = "부모 댓글 아이디", notes = "부모 댓글 아이디를 입력해주세요", example = "7")

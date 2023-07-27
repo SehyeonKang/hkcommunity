@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class PostResponseForm {
 
-    private Long postNum;
+    private Long id;
     private Long viewCount;
     private String author;
     private String title;

@@ -1,6 +1,7 @@
 package com.hkcommunity.modules.comment;
 
 import com.hkcommunity.modules.account.Account;
+import com.hkcommunity.modules.comment.form.CommentUpdateRequest;
 import com.hkcommunity.modules.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Table(name = "comments")
 @Entity
 @Getter
 @AllArgsConstructor @NoArgsConstructor
@@ -59,6 +61,10 @@ public class Comment {
 
     public Optional<Comment> findDeletableComment() {
         return hasChildren() ? Optional.empty() : Optional.of(findDeletableCommentByParent());
+    }
+
+    public void update(CommentUpdateRequest request) {
+        this.content = request.getContent();
     }
 
     public void delete() {

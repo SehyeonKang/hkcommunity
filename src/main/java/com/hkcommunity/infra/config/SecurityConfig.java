@@ -26,6 +26,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/comments").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/comments/{id}").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/comments/{id}").authenticated()
                 .mvcMatchers("/", "/login", "/sign-up", "/check-email-token",
                         "/email-login", "/check-email-login", "/login-by-email").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/profile/*").permitAll()

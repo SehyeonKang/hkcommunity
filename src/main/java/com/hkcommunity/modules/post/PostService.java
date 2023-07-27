@@ -38,7 +38,7 @@ public class PostService {
         post.plusViewCount(post.getViewCount());
 
         PostResponseForm postResponseForm = PostResponseForm.builder()
-                .postNum(post.getId())
+                .id(post.getId())
                 .author(post.getAuthor().getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
