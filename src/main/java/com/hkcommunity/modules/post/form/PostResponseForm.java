@@ -12,6 +12,7 @@ public class PostResponseForm {
     private String author;
     private String title;
     private String content;
+    private String postCategory;
     private String publishedDateTime;
     private boolean authorChecked;
 

@@ -9,6 +9,9 @@
         <div class="col-sm-8">
           <div class="card bg-light py-0">
             <div class="card-header" id="titleHeader">
+              <label class="badge badge-dark mr-1">
+                <span id="titleCategory" th:text="${post.postCategory}" ></span>
+              </label>
               <span class="card-text" th:text="${post.title}">게시글 제목</span>
               <a sec:authorize="isAuthenticated()" th:if="${post.authorChecked == true}">
                 <span class="card-text" id="postDeleteText" th:onclick="|location.href='/realm/' + ${post.id} + '/delete'|">삭제</span>
@@ -71,7 +74,7 @@
 
         <hr style="border: solid 1px darkgray;">
         <div class="form-group d-flex justify-content-end">
-          <div id="viewButtonToList"></div>
+          <button class="btn btn-secondary" type="submit" onclick="location.href='/realm'">목록으로</button>
         </div>
       </div>
     </div>

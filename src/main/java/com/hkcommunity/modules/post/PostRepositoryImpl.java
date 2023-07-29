@@ -48,6 +48,7 @@ public class PostRepositoryImpl implements CustomPostRepository{
                         post.viewCount,
                         post.likeCount,
                         post.title,
+                        post.postCategory,
                         account.nickname,
                         post.publishedDateTime))
                 .from(post)

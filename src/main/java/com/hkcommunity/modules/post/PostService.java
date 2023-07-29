@@ -42,6 +42,7 @@ public class PostService {
                 .author(post.getAuthor().getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
+                .postCategory(post.getPostCategory())
                 .viewCount(post.getViewCount())
                 .publishedDateTime(convertedPublishedDateTime)
                 .authorChecked(authorCheck)

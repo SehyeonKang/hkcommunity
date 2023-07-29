@@ -11,16 +11,26 @@
     <div class="row justify-content-center">
       <form class="needs-validation col-sm-8" th:action="@{/dimension/write}" th:object="${postForm}" method="post" novalidate>
         <input type="hidden" id="boardCategory" th:field="*{boardCategory}">
-        <div class="form-group">
-          <label for="title">제목</label>
-          <input id="title" type="text" th:field="*{title}" class="form-control"
-                 placeholder="제목" aria-describedby="titleHelp" required max="100">
-          <small class="invalid-feedback">제목을 입력하세요.</small>
-          <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
+
+        <div class="d-flex justify-content-center mb-3">
+          <div class="input-group">
+            <input class="form-control col-sm-1 mr-3" list="datalistOptions" id="dataList" placeholder="랭크" th:field="*{postCategory}">
+            <datalist id="datalistOptions">
+              <option value="금기">
+              <option value="원죄">
+              <option value="고통">
+              <option value="홍련">
+              <option value="적멸">
+            </datalist>
+
+            <input id="title" type="text" th:field="*{title}" class="form-control"
+                   placeholder="제목" aria-describedby="titleHelp" required max="100">
+            <small class="invalid-feedback">제목을 입력하세요.</small>
+            <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
+          </div>
         </div>
 
         <div class="form-group">
-          <label for="content">내용</label>
           <textarea id="content" type="textarea" th:field="*{content}" class="form-control"
                     placeholder="내용을 작성해주세요." aria-describedby="contentHelp" required></textarea>
           <small class="invalid-feedback">내용를 입력하세요.</small>
