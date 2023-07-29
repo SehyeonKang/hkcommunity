@@ -24,23 +24,24 @@ public class PostRepositoryImpl implements CustomPostRepository{
 
 
     @Override
-    public Page<BoardResponseForm> selectPostList(String searchKeyword, Pageable pageable) {
-        List<BoardResponseForm> content = getPostList(searchKeyword, pageable);
-        Long count = getCount(searchKeyword);
+    public Page<BoardResponseForm> selectPostList(String boardCategory, String searchKeyword, Pageable pageable) {
+        List<BoardResponseForm> content = getPostList(boardCategory, searchKeyword, pageable);
+        Long count = getCount(boardCategory, searchKeyword);
         return new PageImpl<>(content, pageable, count);
     }
 
-    private Long getCount(String searchKeyword) {
+    private Long getCount(String boardCategory, String searchKeyword) {
         Long count = jpaQueryFactory
                 .select(post.count())
                 .from(post)
-                .where(containsSearchKeyword(searchKeyword))
+                .where(containsSearchKeyword(searchKeyword)
+                        ,checkBoardCategory(boardCategory))
                 .fetchOne();
 
         return count;
     }
 
-    private List<BoardResponseForm> getPostList(String searchKeyword, Pageable pageable) {
+    private List<BoardResponseForm> getPostList(String boardCategory, String searchKeyword, Pageable pageable) {
         List<BoardResponseForm> content = jpaQueryFactory
                 .select(new QBoardResponseForm(
                         post.id,
@@ -51,7 +52,8 @@ public class PostRepositoryImpl implements CustomPostRepository{
                         post.publishedDateTime))
                 .from(post)
                 .leftJoin(post.author, account)
-                .where(containsSearchKeyword(searchKeyword))
+                .where(containsSearchKeyword(searchKeyword)
+                        , checkBoardCategory(boardCategory))
                 .orderBy(post.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -64,5 +66,8 @@ public class PostRepositoryImpl implements CustomPostRepository{
         return searchKeyword != null ? post.title.contains(searchKeyword) : null;
     }
 
+    private BooleanExpression checkBoardCategory(String boardCategory) {
+         return post.boardCategory.eq(boardCategory);
+    }
 
 }

@@ -35,14 +35,14 @@ public class PostController {
     public String newAnnouncementForm(@CurrentAccount Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(new PostForm());
-        return "post/form";
+        return "post/announcement/form";
     }
 
     @PostMapping("/announcement/write")
     public String writeNewAnnouncement(@CurrentAccount Account account, @Valid PostForm postForm, Errors errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute(account);
-            return "post/form";
+            return "post/announcement/form";
         }
 
         Post newPost = postService.createNewPost(modelMapper.map(postForm, Post.class), account);
@@ -51,17 +51,9 @@ public class PostController {
 
     @GetMapping("/announcement/{id}")
     public String viewAnnouncement(@CurrentAccount Account account, @PathVariable Long id, Model model) {
-        Post post = postService.getPost(id);
-        PostResponseForm postResponseForm = postService.getPostResponseForm(id, account);
-        LikeResponseForm likeResponseForm = likeService.getLikeInfo(new LikeForm(account, post));
-        boolean pushedCheck = likeResponseForm.isPushedCheck();
-        Long likeCount = likeResponseForm.getPostLikeNum();
-
         model.addAttribute(account);
-        model.addAttribute("post", postResponseForm);
-        model.addAttribute("likeCheck", pushedCheck);
-        model.addAttribute("likeCount", likeCount);
-        return "post/view";
+        viewPostSetting(account, id, model);
+        return "post/announcement/view";
     }
 
     @GetMapping("/announcement/{id}/edit")
@@ -70,7 +62,7 @@ public class PostController {
         model.addAttribute(account);
         model.addAttribute(post);
         model.addAttribute(modelMapper.map(post, PostForm.class));
-        return "post/edit-form";
+        return "post/announcement/edit-form";
     }
 
     @PostMapping("/announcement/{id}/edit")
@@ -81,7 +73,7 @@ public class PostController {
         if (errors.hasErrors()) {
             model.addAttribute(account);
             model.addAttribute(post);
-            return "post/edit-form";
+            return "post/announcement/edit-form";
         }
 
         postService.updatePost(post, postForm);
@@ -94,7 +86,7 @@ public class PostController {
         Post post = postService.getPostToDelete(account, id);
         model.addAttribute(account);
         model.addAttribute(post);
-        return "post/delete-form";
+        return "post/announcement/delete-form";
     }
 
     @PostMapping("/announcement/{id}/delete")
@@ -106,18 +98,254 @@ public class PostController {
 
     @GetMapping("/announcement")
     public String viewAnnouncementList(String searchKeyword, Pageable pageable, Model model) {
-        Page<BoardResponseForm> result = postRepository.selectPostList(searchKeyword, pageable);
+        Page<BoardResponseForm> result = postRepository.selectPostList("announcement", searchKeyword, pageable);
         model.addAttribute("list", result);
-        model.addAttribute("maxPage", 5);
         model.addAttribute("searchKeyword", searchKeyword);
         pageModelSetting(result, model);
-        return "post/list";
+        return "post/announcement/list";
+    }
+
+    @GetMapping("/dimension/write")
+    public String newDimensionForm(@CurrentAccount Account account, Model model) {
+        model.addAttribute(account);
+        model.addAttribute(new PostForm());
+        return "post/dimension/form";
+    }
+
+    @PostMapping("/dimension/write")
+    public String writeNewDimension(@CurrentAccount Account account, @Valid PostForm postForm, Errors errors, Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute(account);
+            return "post/dimension/form";
+        }
+
+        Post newPost = postService.createNewPost(modelMapper.map(postForm, Post.class), account);
+        return "redirect:/dimension/" + newPost.getId();
+    }
+
+    @GetMapping("/dimension/{id}")
+    public String viewDimension(@CurrentAccount Account account, @PathVariable Long id, Model model) {
+        model.addAttribute(account);
+        viewPostSetting(account, id, model);
+        return "post/dimension/view";
+    }
+
+    @GetMapping("/dimension/{id}/edit")
+    public String viewDimensionEdit(@CurrentAccount Account account, @PathVariable Long id, Model model) {
+        Post post = postService.getPostToUpdate(account, id);
+        model.addAttribute(account);
+        model.addAttribute(post);
+        model.addAttribute(modelMapper.map(post, PostForm.class));
+        return "post/dimension/edit-form";
+    }
+
+    @PostMapping("/dimension/{id}/edit")
+    public String updateDimension(@CurrentAccount Account account, @PathVariable Long id,
+                                     @Valid PostForm postForm, Errors errors, Model model, RedirectAttributes attributes) {
+        Post post = postService.getPostToUpdate(account, id);
+
+        if (errors.hasErrors()) {
+            model.addAttribute(account);
+            model.addAttribute(post);
+            return "post/dimension/edit-form";
+        }
+
+        postService.updatePost(post, postForm);
+        attributes.addFlashAttribute("message", "게시글을 수정했습니다.");
+        return "redirect:/dimension/" + id;
+    }
+
+    @GetMapping("/dimension/{id}/delete")
+    public String viewDimensionDelete(@CurrentAccount Account account, @PathVariable Long id, Model model) {
+        Post post = postService.getPostToDelete(account, id);
+        model.addAttribute(account);
+        model.addAttribute(post);
+        return "post/dimension/delete-form";
+    }
+
+    @PostMapping("/dimension/{id}/delete")
+    public String deleteDimension(@CurrentAccount Account account, @PathVariable Long id) {
+        Post post = postService.getPostToDelete(account, id);
+        postService.deletePost(post);
+        return "redirect:/dimension";
+    }
+
+    @GetMapping("/dimension")
+    public String viewDimensionList(String searchKeyword, Pageable pageable, Model model) {
+        Page<BoardResponseForm> result = postRepository.selectPostList("dimension", searchKeyword, pageable);
+        model.addAttribute("list", result);
+        model.addAttribute("searchKeyword", searchKeyword);
+        pageModelSetting(result, model);
+        return "post/dimension/list";
+    }
+
+    @GetMapping("/arena/write")
+    public String newArenaForm(@CurrentAccount Account account, Model model) {
+        model.addAttribute(account);
+        model.addAttribute(new PostForm());
+        return "post/arena/form";
+    }
+
+    @PostMapping("/arena/write")
+    public String writeNewArena(@CurrentAccount Account account, @Valid PostForm postForm, Errors errors, Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute(account);
+            return "post/arena/form";
+        }
+
+        Post newPost = postService.createNewPost(modelMapper.map(postForm, Post.class), account);
+        return "redirect:/arena/" + newPost.getId();
+    }
+
+    @GetMapping("/arena/{id}")
+    public String viewArena(@CurrentAccount Account account, @PathVariable Long id, Model model) {
+        model.addAttribute(account);
+        viewPostSetting(account, id, model);
+        return "post/arena/view";
+    }
+
+    @GetMapping("/arena/{id}/edit")
+    public String viewArenaEdit(@CurrentAccount Account account, @PathVariable Long id, Model model) {
+        Post post = postService.getPostToUpdate(account, id);
+        model.addAttribute(account);
+        model.addAttribute(post);
+        model.addAttribute(modelMapper.map(post, PostForm.class));
+        return "post/arena/edit-form";
+    }
+
+    @PostMapping("/arena/{id}/edit")
+    public String updateArena(@CurrentAccount Account account, @PathVariable Long id,
+                                  @Valid PostForm postForm, Errors errors, Model model, RedirectAttributes attributes) {
+        Post post = postService.getPostToUpdate(account, id);
+
+        if (errors.hasErrors()) {
+            model.addAttribute(account);
+            model.addAttribute(post);
+            return "post/arena/edit-form";
+        }
+
+        postService.updatePost(post, postForm);
+        attributes.addFlashAttribute("message", "게시글을 수정했습니다.");
+        return "redirect:/arena/" + id;
+    }
+
+    @GetMapping("/arena/{id}/delete")
+    public String viewArenaDelete(@CurrentAccount Account account, @PathVariable Long id, Model model) {
+        Post post = postService.getPostToDelete(account, id);
+        model.addAttribute(account);
+        model.addAttribute(post);
+        return "post/arena/delete-form";
+    }
+
+    @PostMapping("/arena/{id}/delete")
+    public String deleteArena(@CurrentAccount Account account, @PathVariable Long id) {
+        Post post = postService.getPostToDelete(account, id);
+        postService.deletePost(post);
+        return "redirect:/arena";
+    }
+
+    @GetMapping("/arena")
+    public String viewArenaList(String searchKeyword, Pageable pageable, Model model) {
+        Page<BoardResponseForm> result = postRepository.selectPostList("arena", searchKeyword, pageable);
+        model.addAttribute("list", result);
+        model.addAttribute("searchKeyword", searchKeyword);
+        pageModelSetting(result, model);
+        return "post/arena/list";
+    }
+
+    @GetMapping("/realm/write")
+    public String newRealmForm(@CurrentAccount Account account, Model model) {
+        model.addAttribute(account);
+        model.addAttribute(new PostForm());
+        return "post/realm/form";
+    }
+
+    @PostMapping("/realm/write")
+    public String writeNewRealm(@CurrentAccount Account account, @Valid PostForm postForm, Errors errors, Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute(account);
+            return "post/realm/form";
+        }
+
+        Post newPost = postService.createNewPost(modelMapper.map(postForm, Post.class), account);
+        return "redirect:/realm/" + newPost.getId();
+    }
+
+    @GetMapping("/realm/{id}")
+    public String viewRealm(@CurrentAccount Account account, @PathVariable Long id, Model model) {
+        model.addAttribute(account);
+        viewPostSetting(account, id, model);
+        return "post/realm/view";
+    }
+
+    @GetMapping("/realm/{id}/edit")
+    public String viewRealmEdit(@CurrentAccount Account account, @PathVariable Long id, Model model) {
+        Post post = postService.getPostToUpdate(account, id);
+        model.addAttribute(account);
+        model.addAttribute(post);
+        model.addAttribute(modelMapper.map(post, PostForm.class));
+        return "post/realm/edit-form";
+    }
+
+    @PostMapping("/realm/{id}/edit")
+    public String updateRealm(@CurrentAccount Account account, @PathVariable Long id,
+                              @Valid PostForm postForm, Errors errors, Model model, RedirectAttributes attributes) {
+        Post post = postService.getPostToUpdate(account, id);
+
+        if (errors.hasErrors()) {
+            model.addAttribute(account);
+            model.addAttribute(post);
+            return "post/realm/edit-form";
+        }
+
+        postService.updatePost(post, postForm);
+        attributes.addFlashAttribute("message", "게시글을 수정했습니다.");
+        return "redirect:/realm/" + id;
+    }
+
+    @GetMapping("/realm/{id}/delete")
+    public String viewRealmDelete(@CurrentAccount Account account, @PathVariable Long id, Model model) {
+        Post post = postService.getPostToDelete(account, id);
+        model.addAttribute(account);
+        model.addAttribute(post);
+        return "post/realm/delete-form";
+    }
+
+    @PostMapping("/realm/{id}/delete")
+    public String deleteRealm(@CurrentAccount Account account, @PathVariable Long id) {
+        Post post = postService.getPostToDelete(account, id);
+        postService.deletePost(post);
+        return "redirect:/realm";
+    }
+
+    @GetMapping("/realm")
+    public String viewRealmList(String searchKeyword, Pageable pageable, Model model) {
+        Page<BoardResponseForm> result = postRepository.selectPostList("realm", searchKeyword, pageable);
+        model.addAttribute("list", result);
+        model.addAttribute("searchKeyword", searchKeyword);
+        pageModelSetting(result, model);
+        return "post/realm/list";
+    }
+
+    private void viewPostSetting(Account account, Long id, Model model) {
+        Post post = postService.getPost(id);
+        PostResponseForm postResponseForm = postService.getPostResponseForm(id, account);
+        LikeResponseForm likeResponseForm = likeService.getLikeInfo(new LikeForm(account, post));
+        boolean pushedCheck = likeResponseForm.isPushedCheck();
+        Long likeCount = likeResponseForm.getPostLikeNum();
+
+        model.addAttribute("post", postResponseForm);
+        model.addAttribute("likeCheck", pushedCheck);
+        model.addAttribute("likeCount", likeCount);
     }
 
     private void pageModelSetting(Page<BoardResponseForm> result, Model model) {
+        model.addAttribute("maxPage", 5);
         model.addAttribute("totalCount", result.getTotalElements());
         model.addAttribute("size", result.getPageable().getPageSize());
         model.addAttribute("number", result.getPageable().getPageNumber());
         model.addAttribute("totalPages", result.getTotalPages());
     }
+
+
 }

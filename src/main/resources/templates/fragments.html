@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/default_layout"
-      xmlns="http://www.w3.org/1999/html">>
+      xmlns="http://www.w3.org/1999/html">
 
 <head th:fragment="head">
     <meta charset="UTF-8">
@@ -212,114 +211,6 @@
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#" th:href="@{/settings/profile}">프로필</a>
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" href="#" th:href="@{/settings/password}">비밀번호</a>
     <a class="list-group-item list-group-item-action list-group-item-danger" th:classappend="${currentMenu == 'account'}? active" href="#" th:href="@{/settings/account}">계정</a>
-</div>
-
-<div th:fragment="post-info">
-    <div class="row justify-content-center pt-5">
-        <div class="col-sm-8">
-            <div class="card bg-light py-0">
-                <div class="card-header" id="titleHeader">
-                    <span class="card-text" th:text="${post.title}">게시글 제목</span>
-                    <a sec:authorize="isAuthenticated()" th:if="${post.authorChecked == true}">
-                        <span class="card-text" id="postDeleteText" th:onclick="|location.href='/announcement/' + ${post.id} + '/delete'|">삭제</span>
-                        <span class="card-text" id="postEditText" th:onclick="|location.href='/announcement/' + ${post.id} + '/edit'|">수정</span>
-                    </a>
-                </div>
-                <div class="card-body my-1 py-1" id="postInfoCardBody">
-                    <span class="card-text" id="postAuthor" th:text="${post.author}">작성자</span>
-                    <span class="card-text" id="postLikeCount" th:text="${likeCount}">좋아요 수</span>
-                    <span class="card-text" id="postViewCount" th:text="${post.viewCount}">조회수</span>
-                    <span class="card-text" id="postPublishedTime" th:text="${post.publishedDateTime}">게시일</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div th:fragment="post-list" layout:fragment="content" class="content">
-    <nav class="container">
-        <br>
-        <form>
-            <table class="table table-hover">
-                <colgroup>
-                    <col style="width: 6%" />
-                    <col style="width: 50%" />
-                    <col style="width: 12%" />
-                    <col style="width: 10%" />
-                    <col style="width: 8%" />
-                    <col style="width: 6%" />
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>작성일</th>
-                    <th>조회수</th>
-                    <th>추천</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                <tr th:each="list, index : ${list}">
-                    <td id="postNumOnBoard" th:text="${totalCount - (size * number) - index.index}">번호</td>
-                    <td id="postTitleOnBoard" th:text="${list.title}" th:onclick="|location.href='/announcement/' + ${list.id}|">제목</td>
-                    <td id="postAuthorOnBoard" th:text="${list.author}">작성자</td>
-                    <td id="postPublishedOnBoard" th:text="${#temporals.format(list.publishedDateTime, 'yyyy-MM-dd')}">작성일</td>
-                    <td id="postViewOnBoard" th:text="${list.viewCount}">조회수</td>
-                    <td id="postLikeOnBoard" th:text="${list.likeCount}">추천</td>
-                </tr>
-                </tbody>
-            </table>
-            <br>
-
-            <div class="d-flex justify-content-end">
-                <a href="/announcement/write" class="btn btn-primary">글쓰기</a>
-            </div>
-            <br>
-            <div class="row justify-content-center">
-                <div class="input-group col-sm-4">
-                    <input type="text" name="searchKeyword" th:value="${searchKeyword}" class="form-control">
-                    <button type="submit" class="btn btn-secondary">검색</button>
-                </div>
-            </div>
-            <br>
-            <nav class="container d-flex align-items-center justify-content-center" aria-label="Page navigation example"
-                 th:with="start=${(list.number/maxPage)*maxPage + 1},
-                  end=(${(list.totalPages == 0) ? 1 : (start + (maxPage - 1) < list.totalPages ? start + (maxPage - 1) : list.totalPages)})">
-                <ul class="pagination">
-
-                    <li th:if="${start > 1}" class="page-item">
-                        <a th:href="@{/announcement(page=0, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;&laquo;</span>
-                        </a>
-                    </li>
-
-                    <li th:if="${start > 1}" class="page-item">
-                        <a th:href="@{/announcement(page=${start - maxPage - 1}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-
-                    <li th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${list.number+1 == page} ? active">
-                        <a th:href="@{/announcement(page=${page - 1}, searchKeyword=${searchKeyword})}" th:text="${page}" class="page-link" href="#">1</a>
-                    </li>
-
-                    <li th:if="${end < list.totalPages}" class="page-item">
-                        <a th:href="@{/announcement(page=${start + maxPage - 1}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-
-                    <li th:if="${end < list.totalPages}" class="page-item">
-                        <a th:href="@{/announcement(page=${totalPages - 1}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </form>
-    </nav>
 </div>
 
 <div th:fragment="like-button">

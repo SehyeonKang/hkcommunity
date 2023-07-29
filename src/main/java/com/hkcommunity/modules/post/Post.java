@@ -35,6 +35,10 @@ public class Post {
     @Lob @Basic(fetch = FetchType.EAGER)
     private String content;
 
+    private String boardCategory;
+
+    private String postCategory;
+
     private Long viewCount;
 
     private Long likeCount;

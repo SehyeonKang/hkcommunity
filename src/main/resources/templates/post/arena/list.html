@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments.html :: head"></head>
+<body>
+    <div th:replace="fragments.html :: main-nav"></div>
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <div layout:fragment="content" class="content">
+                <nav class="container">
+                    <br>
+                    <form>
+                        <table class="table table-hover">
+                            <colgroup>
+                                <col style="width: 6%" />
+                                <col style="width: 50%" />
+                                <col style="width: 12%" />
+                                <col style="width: 10%" />
+                                <col style="width: 8%" />
+                                <col style="width: 6%" />
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>제목</th>
+                                <th>작성자</th>
+                                <th>작성일</th>
+                                <th>조회수</th>
+                                <th>추천</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="list, index : ${list}">
+                                <td id="postNumOnBoard" th:text="${totalCount - (size * number) - index.index}">번호</td>
+                                <td id="postTitleOnBoard" th:text="${list.title}" th:onclick="|location.href='/arena/' + ${list.id}|"></td>
+                                <td id="postAuthorOnBoard" th:text="${list.author}">작성자</td>
+                                <td id="postPublishedOnBoard" th:text="${#temporals.format(list.publishedDateTime, 'yyyy-MM-dd')}">작성일</td>
+                                <td id="postViewOnBoard" th:text="${list.viewCount}">조회수</td>
+                                <td id="postLikeOnBoard" th:text="${list.likeCount}">추천</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <br>
+
+                        <div class="d-flex justify-content-end">
+                            <a href="/arena/write" class="btn btn-primary">글쓰기</a>
+                        </div>
+
+                        <br>
+                        <div class="row justify-content-center">
+                            <div class="input-group col-sm-4">
+                                <input type="text" name="searchKeyword" th:value="${searchKeyword}" class="form-control">
+                                <button type="submit" class="btn btn-secondary">검색</button>
+                            </div>
+                        </div>
+                        <br>
+                        <nav class="container d-flex align-items-center justify-content-center" aria-label="Page navigation example"
+                             th:with="start=${(list.number/maxPage)*maxPage + 1},
+                             end=(${(list.totalPages == 0) ? 1 : (start + (maxPage - 1) < list.totalPages ? start + (maxPage - 1) : list.totalPages)})">
+                            <ul class="pagination">
+
+                                <li th:if="${start > 1}" class="page-item">
+                                    <a th:href="@{/arena(page=0, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;&laquo;</span>
+                                    </a>
+                                </li>
+
+                                <li th:if="${start > 1}" class="page-item">
+                                    <a th:href="@{/arena(page=${start - maxPage - 1}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+
+                                <li th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${list.number+1 == page} ? active">
+                                    <a th:href="@{/arena(page=${page - 1}, searchKeyword=${searchKeyword})}" th:text="${page}" class="page-link" href="#">1</a>
+                                </li>
+
+                                <li th:if="${end < list.totalPages}" class="page-item">
+                                    <a th:href="@{/arena(page=${start + maxPage - 1}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+
+                                <li th:if="${end < list.totalPages}" class="page-item">
+                                    <a th:href="@{/arena(page=${totalPages - 1}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </form>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments.html :: footer"></div>
+</body>
+</html>

@@ -14,4 +14,9 @@ public class PostForm {
 
     @NotBlank
     private String content;
+
+    @NotBlank
+    private String boardCategory;
+
+    private String postCategory;
 }

@@ -24,6 +24,7 @@ public class CommentDto {
     private Long id;
     private String content;
     private AccountDto account;
+    private boolean deleted;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdDateTime;
@@ -32,7 +33,7 @@ public class CommentDto {
     public static List<CommentDto> toDtoList(List<Comment> comments) {
         NestedConvertHelper helper = NestedConvertHelper.newInstance(
                 comments,
-                c -> new CommentDto(c.getId(), c.isDeleted() ? null : c.getContent(), c.isDeleted() ? null : AccountDto.toDto(c.getAccount()), c.getCreatedDateTime(), new ArrayList<>()),
+                c -> new CommentDto(c.getId(), c.isDeleted() ? null : c.getContent(), AccountDto.toDto(c.getAccount()), c.isDeleted(), c.getCreatedDateTime(), new ArrayList<>()),
                 c -> c.getParent(),
                 c -> c.getId(),
                 d -> d.getChildren());
