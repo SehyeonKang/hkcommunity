@@ -2,6 +2,7 @@ package com.hkcommunity.modules.post;
 
 import com.hkcommunity.modules.account.Account;
 import com.hkcommunity.modules.account.UserAccount;
+import com.hkcommunity.modules.comment.Comment;
 import com.hkcommunity.modules.like.Like;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,7 +11,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,7 +31,11 @@ public class Post {
 
     @Builder.Default
     @OneToMany(mappedBy = "post")
-    Set<Like> likes = new HashSet<>();
+    private List<Comment> comments = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "post")
+    private Set<Like> likes = new HashSet<>();
 
     private String title;
 
@@ -42,6 +49,8 @@ public class Post {
     private Long viewCount;
 
     private Long likeCount;
+
+    private Long commentCount;
 
     @CreatedDate
     private LocalDateTime publishedDateTime;
@@ -62,6 +71,7 @@ public class Post {
         this.author = account;
         this.viewCount = 0L;
         this.likeCount = 0L;
+        this.commentCount = 0L;
     }
 
     public boolean isAuthor(UserAccount userAccount) {
@@ -85,6 +95,16 @@ public class Post {
 
     public Post minusLikeCount(Long likeCount) {
         this.likeCount = likeCount - 1;
+        return this;
+    }
+
+    public Post plusCommentCount() {
+        this.commentCount++;
+        return this;
+    }
+
+    public Post minusCommentCount() {
+        this.commentCount--;
         return this;
     }
 }

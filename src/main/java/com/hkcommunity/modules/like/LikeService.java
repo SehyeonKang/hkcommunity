@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -59,13 +57,4 @@ public class LikeService {
         return likeRepository.findLikeNum(likeForm.getPost().getId());
     }
 
-    public Post getPost(Long postId) {
-        Optional<Post> postWrapped = this.postRepository.findById(postId);
-        if (postWrapped == null) {
-            throw new IllegalArgumentException(postId + "에 해당하는 게시글이 없습니다.");
-        }
-
-        Post post = postWrapped.get();
-        return post;
-    }
 }

@@ -34,9 +34,12 @@
                                 <td id="postNumOnBoard" th:text="${totalCount - (size * number) - index.index}">번호</td>
                                 <td id="postTitleOnBoard">
                                     <label class="badge badge-dark mr-1">
-                                        <span id="titleCategory" th:text="${list.postCategory}" ></span>
+                                        <span id="titleCategory" th:text="${list.postCategory}">글 카테고리</span>
                                     </label>
-                                    <span id="titleText" th:text="${list.title}" th:onclick="|location.href='/announcement/' + ${list.id}|"></span>
+                                    <span th:onclick="|location.href='/realm/' + ${list.id}|">
+                                        <span id="titleText" th:text="${list.title}">제목</span>
+                                        <span class="commentsCount ml-1" th:text="'[' + ${list.commentCount} + ']'">댓글 수</span>
+                                    </span>
                                 </td>
                                 <td id="postAuthorOnBoard" th:text="${list.author}">작성자</td>
                                 <td id="postPublishedOnBoard" th:text="${#temporals.format(list.publishedDateTime, 'yyyy-MM-dd')}">작성일</td>
@@ -45,7 +48,7 @@
                             </tr>
                             </tbody>
                         </table>
-                        <br>
+                        <hr style="border: solid 1px rgb(196, 196, 196);">
 
                         <div class="d-flex justify-content-end">
                             <a href="/realm/write" class="btn btn-primary">글쓰기</a>
@@ -59,7 +62,7 @@
                             </div>
                         </div>
                         <br>
-                        <nav class="container d-flex align-items-center justify-content-center" aria-label="Page navigation example"
+                        <nav class="container d-flex align-items-center justify-content-center" aria-label="Page navigation"
                              th:with="start=${(list.number/maxPage)*maxPage + 1},
                              end=(${(list.totalPages == 0) ? 1 : (start + (maxPage - 1) < list.totalPages ? start + (maxPage - 1) : list.totalPages)})">
                             <ul class="pagination">

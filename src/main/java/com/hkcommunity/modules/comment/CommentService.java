@@ -3,12 +3,11 @@ package com.hkcommunity.modules.comment;
 import com.hkcommunity.infra.exception.CommentNotFoundException;
 import com.hkcommunity.modules.account.AccountRepository;
 import com.hkcommunity.modules.account.form.AccountDto;
-import com.hkcommunity.modules.comment.form.CommentCreateRequest;
-import com.hkcommunity.modules.comment.form.CommentDto;
-import com.hkcommunity.modules.comment.form.CommentUpdateRequest;
-import com.hkcommunity.modules.comment.form.CommentUpdateResponse;
+import com.hkcommunity.modules.comment.form.*;
 import com.hkcommunity.modules.post.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,8 +46,14 @@ public class CommentService {
         return commentUpdateResponse;
     }
 
+    @Transactional(readOnly = true)
+    public Page<ProfileCommentResponseForm> selectProfileCommentList(String author, Pageable pageable) {
+        return commentRepository.selectProfileCommentList(author, pageable);
+    }
+
     public void create(CommentCreateRequest request) {
-        commentRepository.save(CommentCreateRequest.toEntity(request, accountRepository, postRepository, commentRepository));
+        Comment comment = commentRepository.save(CommentCreateRequest.toEntity(request, accountRepository, postRepository, commentRepository));
+        postRepository.plusCommentCount(comment.getPost());
     }
 
     public void update(Long id, CommentUpdateRequest request) {
@@ -58,6 +63,7 @@ public class CommentService {
 
     public void delete(Long id) {
         Comment comment = commentRepository.findById(id).orElseThrow(CommentNotFoundException::new);
+        postRepository.minusCommentCount(comment.getPost());
         comment.findDeletableComment().ifPresentOrElse(commentRepository::delete, comment::delete);
     }
 }

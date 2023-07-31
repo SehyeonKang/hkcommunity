@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments.html :: head"></head>
+<body>
+    <div th:replace="fragments.html :: main-nav"></div>
+    <div class="container">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-2">
+                <svg th:if="${#strings.isEmpty(accountToView.profileImage)}" class="img-fluid float-left rounded img-thumbnail"
+                     th:data-jdenticon-value="${accountToView.nickname}" width="125" height="125"></svg>
+                <img th:if="${!#strings.isEmpty(accountToView.profileImage)}" class="img-fluid float-left rounded img-thumbnail"
+                     th:src="${accountToView.profileImage}" width="125" height="125"/>
+            </div>
+
+            <div class="col-8">
+                <h1 class="display-4 " th:text="${accountToView.nickname}">userNickname</h1>
+                <p class="lead" th:if="${!#strings.isEmpty(accountToView.introduction)}" th:text="${accountToView.introduction}">introduction</p>
+                <p class="lead" th:if="${#strings.isEmpty(accountToView.introduction) && isOwner}">
+                    소개문을 추가하세요.
+                </p>
+            </div>
+        </div>
+
+        <div class="row mt-5 justify-content-center">
+            <div class="col-2">
+                <div th:replace="fragments.html :: account-menu(currentMenu='comments')"></div>
+            </div>
+
+            <div class="col-8">
+                <div layout:fragment="content" class="content">
+                    <nav class="container">
+                        <br>
+                        <form>
+                            <table class="table table-hover">
+                                <colgroup>
+                                    <col style="width: 8%" />
+                                    <col style="width: 50%" />
+                                    <col style="width: 12%" />
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>내용</th>
+                                    <th>작성일</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="list, index : ${list}">
+                                    <td id="postNumOnBoard" th:text="${totalCount - (size * number) - index.index}">번호</td>
+                                    <td id="postTitleOnBoard">
+                                        <span id="titleText" th:text="${list.content}" th:onclick="|location.href='/__${list.boardCategory}__/__${list.postId}__'|">제목</span>
+                                    </td>
+                                    <td id="postPublishedOnBoard" th:text="${#temporals.format(list.createdDateTime, 'yyyy-MM-dd')}">작성일</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <br>
+
+                            <nav class="container d-flex align-items-center justify-content-center" aria-label="Page navigation"
+                                 th:with="start=${(list.number/maxPage)*maxPage + 1},
+                             end=(${(list.totalPages == 0) ? 1 : (start + (maxPage - 1) < list.totalPages ? start + (maxPage - 1) : list.totalPages)})">
+                                <ul class="pagination">
+
+                                    <li th:if="${start > 1}" class="page-item">
+                                        <a th:href="@{/profile/{nickname}/comments(nickname=${accountToView.nickname}, page=0)}" class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;&laquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <li th:if="${start > 1}" class="page-item">
+                                        <a th:href="@{/profile/{nickname}/comments(nickname=${accountToView.nickname}, page=${start - maxPage - 1})}" class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <li th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${list.number+1 == page} ? active">
+                                        <a th:href="@{/profile/{nickname}/comments(nickname=${accountToView.nickname}, page=${page - 1})}" th:text="${page}" class="page-link" href="#">1</a>
+                                    </li>
+
+                                    <li th:if="${end < list.totalPages}" class="page-item">
+                                        <a th:href="@{/profile/{nickname}/comments(nickname=${accountToView.nickname}, page=${start + maxPage - 1})}" class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <li th:if="${end < list.totalPages}" class="page-item">
+                                        <a th:href="@{/profile/{nickname}/comments(nickname=${accountToView.nickname}, page=${totalPages - 1})}" class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </form>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments.html :: footer"></div>
+</body>
+</html>

@@ -2,7 +2,13 @@ package com.hkcommunity.modules.account;
 
 import com.hkcommunity.modules.account.form.SignUpForm;
 import com.hkcommunity.modules.account.validator.SignUpFormValidator;
+import com.hkcommunity.modules.comment.CommentService;
+import com.hkcommunity.modules.comment.form.ProfileCommentResponseForm;
+import com.hkcommunity.modules.post.PostService;
+import com.hkcommunity.modules.post.form.ProfilePostResponseForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -21,6 +27,8 @@ public class AccountController {
 
     private final SignUpFormValidator signUpFormValidator;
     private final AccountService accountService;
+    private final PostService postService;
+    private final CommentService commentService;
     private final AccountRepository accountRepository;
 
     @InitBinder("signUpForm")
@@ -93,6 +101,30 @@ public class AccountController {
         return "account/profile";
     }
 
+    @GetMapping("/profile/{nickname}/posts")
+    public String viewProfilePosts(@PathVariable String nickname, Model model, @CurrentAccount Account account, Pageable pageable) {
+        Account accountToView = accountService.getAccount(nickname);
+        Page<ProfilePostResponseForm> result = postService.selectProfilePostList(nickname, pageable);
+
+        model.addAttribute("accountToView", accountToView);
+        model.addAttribute("isOwner", accountToView.equals(account));
+        model.addAttribute("list", result);
+        pagePostModelSetting(result, model);
+        return "account/profile-posts";
+    }
+
+    @GetMapping("/profile/{nickname}/comments")
+    public String viewProfileComments(@PathVariable String nickname, Model model, @CurrentAccount Account account, Pageable pageable) {
+        Account accountToView = accountService.getAccount(nickname);
+        Page<ProfileCommentResponseForm> result = commentService.selectProfileCommentList(nickname, pageable);
+
+        model.addAttribute("accountToView", accountToView);
+        model.addAttribute("isOwner", accountToView.equals(account));
+        model.addAttribute("list", result);
+        pageCommentModelSetting(result, model);
+        return "account/profile-comments";
+    }
+
     @GetMapping("/email-login")
     public String emailLoginForm() {
         return "account/email-login";
@@ -128,5 +160,21 @@ public class AccountController {
 
         accountService.login(account);
         return view;
+    }
+
+    private void pagePostModelSetting(Page<ProfilePostResponseForm> result, Model model) {
+        model.addAttribute("maxPage", 5);
+        model.addAttribute("totalCount", result.getTotalElements());
+        model.addAttribute("size", result.getPageable().getPageSize());
+        model.addAttribute("number", result.getPageable().getPageNumber());
+        model.addAttribute("totalPages", result.getTotalPages());
+    }
+
+    private void pageCommentModelSetting(Page<ProfileCommentResponseForm> result, Model model) {
+        model.addAttribute("maxPage", 5);
+        model.addAttribute("totalCount", result.getTotalElements());
+        model.addAttribute("size", result.getPageable().getPageSize());
+        model.addAttribute("number", result.getPageable().getPageNumber());
+        model.addAttribute("totalPages", result.getTotalPages());
     }
 }

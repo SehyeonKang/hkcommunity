@@ -28,7 +28,6 @@ public class PostController {
 
     private final PostService postService;
     private final LikeService likeService;
-    private final PostRepository postRepository;
     private final ModelMapper modelMapper;
 
     @GetMapping("/announcement/write")
@@ -98,7 +97,7 @@ public class PostController {
 
     @GetMapping("/announcement")
     public String viewAnnouncementList(String searchKeyword, Pageable pageable, Model model) {
-        Page<BoardResponseForm> result = postRepository.selectPostList("announcement", searchKeyword, pageable);
+        Page<BoardResponseForm> result = postService.selectPostList("announcement", searchKeyword, pageable);
         model.addAttribute("list", result);
         model.addAttribute("searchKeyword", searchKeyword);
         pageModelSetting(result, model);
@@ -172,7 +171,7 @@ public class PostController {
 
     @GetMapping("/dimension")
     public String viewDimensionList(String searchKeyword, Pageable pageable, Model model) {
-        Page<BoardResponseForm> result = postRepository.selectPostList("dimension", searchKeyword, pageable);
+        Page<BoardResponseForm> result = postService.selectPostList("dimension", searchKeyword, pageable);
         model.addAttribute("list", result);
         model.addAttribute("searchKeyword", searchKeyword);
         pageModelSetting(result, model);
@@ -246,7 +245,7 @@ public class PostController {
 
     @GetMapping("/arena")
     public String viewArenaList(String searchKeyword, Pageable pageable, Model model) {
-        Page<BoardResponseForm> result = postRepository.selectPostList("arena", searchKeyword, pageable);
+        Page<BoardResponseForm> result = postService.selectPostList("arena", searchKeyword, pageable);
         model.addAttribute("list", result);
         model.addAttribute("searchKeyword", searchKeyword);
         pageModelSetting(result, model);
@@ -320,7 +319,7 @@ public class PostController {
 
     @GetMapping("/realm")
     public String viewRealmList(String searchKeyword, Pageable pageable, Model model) {
-        Page<BoardResponseForm> result = postRepository.selectPostList("realm", searchKeyword, pageable);
+        Page<BoardResponseForm> result = postService.selectPostList("realm", searchKeyword, pageable);
         model.addAttribute("list", result);
         model.addAttribute("searchKeyword", searchKeyword);
         pageModelSetting(result, model);

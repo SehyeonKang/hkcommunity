@@ -2,11 +2,14 @@ package com.hkcommunity.modules.post;
 
 import com.hkcommunity.modules.account.Account;
 import com.hkcommunity.modules.account.UserAccount;
-import com.hkcommunity.modules.like.LikeRepository;
+import com.hkcommunity.modules.post.form.BoardResponseForm;
 import com.hkcommunity.modules.post.form.PostForm;
 import com.hkcommunity.modules.post.form.PostResponseForm;
+import com.hkcommunity.modules.post.form.ProfilePostResponseForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +23,6 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final LikeRepository likeRepository;
     private final ModelMapper modelMapper;
 
     public Post createNewPost(Post post, Account account) {
@@ -51,6 +53,18 @@ public class PostService {
         return postResponseForm;
     }
 
+    @Transactional(readOnly = true)
+    public Page<BoardResponseForm> selectPostList(String boardCategory, String searchKeyword, Pageable pageable) {
+        return postRepository.selectPostList(boardCategory, searchKeyword, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProfilePostResponseForm> selectProfilePostList(String author, Pageable pageable) {
+        return postRepository.selectProfilePostList(author, pageable);
+    }
+
+
+    @Transactional(readOnly = true)
     public Post getPostToUpdate(Account account, Long postId) {
         Post post = this.getPost(postId);
         if (!account.isAuthor(post)) {
@@ -59,7 +73,7 @@ public class PostService {
 
         return post;
     }
-
+    @Transactional(readOnly = true)
     public Post getPostToDelete(Account account, Long postId) {
         Post post = this.getPost(postId);
         if (!account.isAuthor(post)) {
@@ -69,6 +83,7 @@ public class PostService {
         return post;
     }
 
+    @Transactional(readOnly = true)
     public Post getPost(Long postId) {
         Optional<Post> postWrapped = this.postRepository.findById(postId);
         if (postWrapped == null) {

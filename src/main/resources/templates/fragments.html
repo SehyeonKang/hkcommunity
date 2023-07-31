@@ -100,6 +100,12 @@
             color: cornflowerblue;
         }
 
+        .commentsCount:hover {
+            cursor: pointer;
+            text-decoration: underline;
+            color: cornflowerblue;
+        }
+
         tr > th,
         #postNumOnBoard,
         #postPublishedOnBoard,
@@ -127,6 +133,11 @@
         .comment-parent-nickname {
             font-size: small;
             color: darkgray;
+        }
+
+        .commentsCount {
+            font-size: small;
+            color: gray;
         }
 
         #dataList,
@@ -203,8 +214,8 @@
                         </h6>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
-                        <a class="dropdown-item" >글 목록</a>
-                        <a class="dropdown-item" >댓글 목록</a>
+                        <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name} + '/posts'}">글 목록</a>
+                        <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name} + '/comments'}">댓글 목록</a>
                         <a class="dropdown-item" >관심글 목록</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" th:href="@{'/settings/profile'}">설정</a>
@@ -217,6 +228,12 @@
         </div>
     </div>
 </nav>
+
+<div th:fragment="account-menu (currentMenu)" class="list-group">
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'posts'}? active" href="#" th:href="@{'/profile/' + ${#authentication.name} + '/posts'}">작성 글</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'comments'}? active" href="#" th:href="@{'/profile/' + ${#authentication.name} + '/comments'}">작성 댓글</a>
+</div>
 
 <div th:fragment="settings-menu (currentMenu)" class="list-group">
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#" th:href="@{/settings/profile}">프로필</a>

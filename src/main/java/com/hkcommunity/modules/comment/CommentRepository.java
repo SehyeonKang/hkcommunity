@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+public interface CommentRepository extends JpaRepository<Comment, Long>, CustomCommentRepository {
 
     @Query("select c from Comment c left join fetch c.parent where c.id = :id")
     Optional<Comment> findWithParentById(@Param("id") Long id);

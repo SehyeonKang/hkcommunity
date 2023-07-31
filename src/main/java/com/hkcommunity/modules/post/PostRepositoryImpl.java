@@ -1,7 +1,9 @@
 package com.hkcommunity.modules.post;
 
 import com.hkcommunity.modules.post.form.BoardResponseForm;
+import com.hkcommunity.modules.post.form.ProfilePostResponseForm;
 import com.hkcommunity.modules.post.form.QBoardResponseForm;
+import com.hkcommunity.modules.post.form.QProfilePostResponseForm;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -30,6 +32,23 @@ public class PostRepositoryImpl implements CustomPostRepository{
         return new PageImpl<>(content, pageable, count);
     }
 
+    @Override
+    public Page<ProfilePostResponseForm> selectProfilePostList(String author, Pageable pageable) {
+        List<ProfilePostResponseForm> content = getProfilePostList(author, pageable);
+        Long count = getProfilePostCount(author);
+        return new PageImpl<>(content, pageable, count);
+    }
+
+    @Override
+    public void plusCommentCount(Post post) {
+        post.plusCommentCount();
+    }
+
+    @Override
+    public void minusCommentCount(Post post) {
+        post.minusCommentCount();
+    }
+
     private Long getCount(String boardCategory, String searchKeyword) {
         Long count = jpaQueryFactory
                 .select(post.count())
@@ -41,12 +60,23 @@ public class PostRepositoryImpl implements CustomPostRepository{
         return count;
     }
 
+    private Long getProfilePostCount(String author) {
+        Long count = jpaQueryFactory
+                .select(post.count())
+                .from(post)
+                .where(post.author.nickname.eq(author))
+                .fetchOne();
+
+        return count;
+    }
+
     private List<BoardResponseForm> getPostList(String boardCategory, String searchKeyword, Pageable pageable) {
         List<BoardResponseForm> content = jpaQueryFactory
                 .select(new QBoardResponseForm(
                         post.id,
                         post.viewCount,
                         post.likeCount,
+                        post.commentCount,
                         post.title,
                         post.postCategory,
                         account.nickname,
@@ -63,6 +93,24 @@ public class PostRepositoryImpl implements CustomPostRepository{
         return content;
     }
 
+    private List<ProfilePostResponseForm> getProfilePostList(String author, Pageable pageable) {
+        List<ProfilePostResponseForm> content = jpaQueryFactory
+                .select(new QProfilePostResponseForm(
+                        post.id,
+                        post.viewCount,
+                        post.title,
+                        post.boardCategory,
+                        post.publishedDateTime))
+                .from(post)
+                .where(post.author.nickname.eq(author))
+                .orderBy(post.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        return content;
+    }
+
     private BooleanExpression containsSearchKeyword(String searchKeyword) {
         return searchKeyword != null ? post.title.contains(searchKeyword) : null;
     }
@@ -70,5 +118,4 @@ public class PostRepositoryImpl implements CustomPostRepository{
     private BooleanExpression checkBoardCategory(String boardCategory) {
          return post.boardCategory.eq(boardCategory);
     }
-
 }

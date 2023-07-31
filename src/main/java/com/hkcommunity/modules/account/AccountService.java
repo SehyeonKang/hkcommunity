@@ -101,6 +101,7 @@ public class AccountService implements UserDetailsService {
         login(account);
     }
 
+    @Transactional(readOnly = true)
     public Account getAccount(String nickname) {
         Account account = accountRepository.findByNickname(nickname);
         if (account == null) {
