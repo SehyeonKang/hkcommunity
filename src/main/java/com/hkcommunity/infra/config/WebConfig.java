@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         PageableHandlerMethodArgumentResolver pageableHandlerMethodArgumentResolver = new PageableHandlerMethodArgumentResolver();
-        pageableHandlerMethodArgumentResolver.setMaxPageSize(3);
+        pageableHandlerMethodArgumentResolver.setMaxPageSize(10);
         argumentResolvers.add(pageableHandlerMethodArgumentResolver);
     }
 }

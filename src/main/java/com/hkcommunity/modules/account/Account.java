@@ -70,7 +70,7 @@ public class Account {
     }
 
     public boolean canSendConfirmEmail() {
-        return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusMinutes(5));
+        return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusSeconds(5));
     }
 
     public void updatePassword(String newPassword) {

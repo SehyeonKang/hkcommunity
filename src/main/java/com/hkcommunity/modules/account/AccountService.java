@@ -130,7 +130,7 @@ public class AccountService implements UserDetailsService {
 
     public void sendLoginLink(Account account) {
         Context context = new Context();
-        context.setVariable("link", "/check-email-token?token=" + account.getEmailCheckToken() + "&email=" + account.getEmail());
+        context.setVariable("link", "/login-by-email?token=" + account.getEmailCheckToken() + "&email=" + account.getEmail());
         context.setVariable("nickname", account.getNickname());
         context.setVariable("linkName", "빌브이 아틀리에 로그인하기");
         context.setVariable("message", "빌브이 아틀리에 서비스를 사용하시려면 링크를 클릭하세요.");

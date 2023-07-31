@@ -95,8 +95,9 @@
     function findAllComment() {
 
       const postId = [[ ${post.id} ]];
-      const accountId = [[ ${account.id} ]]
+      const accountNickname = [[ ${#authentication.name} ]];
 
+      console.log('accountNickname:' + accountNickname);
       $.ajax({
         url: `/api/posts/${postId}/comments`,
         beforeSend: function (xhr) {
@@ -121,6 +122,8 @@
           // 3. 댓글 HTML 추가
           response.result.data.forEach(row => {
 
+            console.log('row.account.nickname:' + row.account.nickname);
+
             if (row.deleted == true) {
               commentHtml += `
                                 <div class="card py-0 mt-3">
@@ -139,11 +142,12 @@
                                 </div>
                               `;
             } else {
-              commentHtml += `
+              if (row.account.nickname == accountNickname) {
+                commentHtml += `
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
                                         <span class="comment-writer"><span class="card-text">${row.account.nickname}</span></span>
-                                        <a sec:authorize="isAuthenticated()" th:if="${row.account.id == accountId}">
+                                        <a sec:authorize="isAuthenticated()">
                                             <a class="comment-delete" onclick="deleteComment(${row.id});"><i class="bi bi-trash3"></i><span class="card-text ml-1">삭제</span></a>
                                             <a class="comment-edit" onclick="findEditComment(${row.id});"><i class="fa fa-pencil"></i><span class="card-text ml-1">수정</span></a>
                                         </a>
@@ -168,6 +172,33 @@
                                     </div>
                                 </div>
                               `;
+              } else {
+                commentHtml += `
+                                <div class="card py-0 mt-3">
+                                    <div class="card-header bg-light">
+                                        <span class="comment-writer"><span class="card-text">${row.account.nickname}</span></span>
+                                        <a class="comment-reply" onclick="findReplyComment(${row.id})"><i class="fa fa-comment fa"></i><span class="card-text ml-1">답글</span></a>
+                                        <span class="date" id="commentDate">${dayjs(row.createdDateTime).format('YYYY-MM-DD HH:mm')}</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="comment-content"><span class="card-text">${row.content}</span></span>
+                                    </div>
+                                </div>
+
+                                <!--/* 댓글 수정 뷰 */-->
+                                <div id="cm_edit_view${row.id}"></div>
+
+                                <!--/* 댓글 답글 작성 뷰 */-->
+                                <div id="cm_createReply_view${row.id}"></div>
+
+                                <!--/* 답글 뷰 */-->
+                                <div class="row justify-content-end">
+                                    <div class="col-sm-11">
+                                        <div id="cm_reply_view${row.id}"></div>
+                                    </div>
+                                </div>
+                              `;
+              }
             }
           });
 
@@ -193,7 +224,7 @@
     function findChildComment(parent, child) {
 
       var idForInnerHtml = '#cm_reply_view' + parent.id;
-      const accountId = [[ ${account.id} ]];
+      const accountNickname = [[ ${#authentication.name} ]];
       let commentHtml = '';
 
       if (child.deleted == true) {
@@ -211,11 +242,12 @@
 
                               `;
       } else {
-        commentHtml += `
+        if (child.account.nickname == accountNickname) {
+          commentHtml += `
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
                                         <span class="comment-writer"><span class="card-text">${child.account.nickname}</span></span>
-                                        <a sec:authorize="isAuthenticated()" th:if="${child.account.id == accountId}">
+                                        <a sec:authorize="isAuthenticated()">
                                             <a class="comment-delete" onclick="deleteComment(${child.id});"><i class="bi bi-trash3"></i><span class="card-text ml-1">삭제</span></a>
                                             <a class="comment-edit" onclick="findEditComment(${child.id});"><i class="fa fa-pencil"></i><span class="card-text ml-1">수정</span></a>
                                         </a>
@@ -238,6 +270,31 @@
                                 <!--/* 답글 뷰 */-->
                                 <div id="cm_reply_view${child.id}"></div>
                               `;
+        } else {
+          commentHtml += `
+                                <div class="card py-0 mt-3">
+                                    <div class="card-header bg-light">
+                                        <span class="comment-writer"><span class="card-text">${child.account.nickname}</span></span>
+                                        <a class="comment-reply" onclick="findReplyComment(${child.id})"><i class="fa fa-comment fa"></i><span class="card-text ml-1">답글</span></a>
+                                        <span class="date" id="commentDate">${dayjs(child.createdDateTime).format('YYYY-MM-DD HH:mm')}</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="comment-parent-nickname"><i class="fa fa-commenting mr-1"></i>${parent.account.nickname}</span>
+                                        <br><br>
+                                        <span class="comment-content"><span class="card-text">${child.content}</span></span>
+                                    </div>
+                                </div>
+
+                                <!--/* 댓글 수정 뷰 */-->
+                                <div id="cm_edit_view${child.id}"></div>
+
+                                <!--/* 댓글 답글 작성 뷰 */-->
+                                <div id="cm_createReply_view${child.id}"></div>
+
+                                <!--/* 답글 뷰 */-->
+                                <div id="cm_reply_view${child.id}"></div>
+                              `;
+        }
       }
 
       document.querySelector(idForInnerHtml).innerHTML += commentHtml;

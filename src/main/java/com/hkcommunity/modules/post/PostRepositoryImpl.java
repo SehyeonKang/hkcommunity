@@ -40,6 +40,26 @@ public class PostRepositoryImpl implements CustomPostRepository{
     }
 
     @Override
+    public void plusViewCount(Post post) {
+        post.plusViewCount();
+    }
+
+    @Override
+    public void minusViewCount(Post post) {
+        post.minusViewCount();
+    }
+
+    @Override
+    public void plusLikeCount(Post post) {
+        post.plusLikeCount();
+    }
+
+    @Override
+    public void minusLikeCount(Post post) {
+        post.minusLikeCount();
+    }
+
+    @Override
     public void plusCommentCount(Post post) {
         post.plusCommentCount();
     }

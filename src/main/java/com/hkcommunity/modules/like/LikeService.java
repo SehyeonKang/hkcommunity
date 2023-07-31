@@ -21,13 +21,13 @@ public class LikeService {
                 .ifPresentOrElse(
                         like -> {
                             Post post = getPostByLikeForm(likeForm);
-                            post.minusLikeCount(post.getLikeCount());
-                            post.minusViewCount(post.getViewCount());
+                            postRepository.minusLikeCount(post);
+                            postRepository.minusViewCount(post);
                             likeRepository.deleteById(like.getId());
                         }, () -> {
                             Post post = getPostByLikeForm(likeForm);
-                            post.plusLikeCount(post.getLikeCount());
-                            post.minusViewCount(post.getViewCount());
+                            postRepository.plusLikeCount(post);
+                            postRepository.minusViewCount(post);
                             likeRepository.save(new Like(likeForm.getAccount(), post));
                         });
 

@@ -10,6 +10,14 @@ public interface CustomPostRepository {
 
     Page<ProfilePostResponseForm> selectProfilePostList(String author, Pageable pageable);
 
+    void plusViewCount(Post post);
+
+    void minusViewCount(Post post);
+
+    void plusLikeCount(Post post);
+
+    void minusLikeCount(Post post);
+
     void plusCommentCount(Post post);
 
     void minusCommentCount(Post post);

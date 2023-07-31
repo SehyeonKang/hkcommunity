@@ -30,11 +30,11 @@ public class Post {
     private Account author;
 
     @Builder.Default
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private Set<Like> likes = new HashSet<>();
 
     private String title;
@@ -78,23 +78,23 @@ public class Post {
         return this.author.equals(userAccount.getAccount());
     }
 
-    public Post plusViewCount(Long viewCount) {
-        this.viewCount = viewCount + 1;
+    public Post plusViewCount() {
+        this.viewCount++;
         return this;
     }
 
-    public Post minusViewCount(Long viewCount) {
-        this.viewCount = viewCount - 1;
+    public Post minusViewCount() {
+        this.viewCount--;
         return this;
     }
 
-    public Post plusLikeCount(Long likeCount) {
-        this.likeCount = likeCount + 1;
+    public Post plusLikeCount() {
+        this.likeCount++;
         return this;
     }
 
-    public Post minusLikeCount(Long likeCount) {
-        this.likeCount = likeCount - 1;
+    public Post minusLikeCount() {
+        this.likeCount--;
         return this;
     }
 
