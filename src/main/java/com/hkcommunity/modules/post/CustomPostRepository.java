@@ -6,7 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CustomPostRepository {
-    Page<BoardResponseForm> selectPostList(String boardCategory, String searchKeyword, Pageable pageable);
+
+    Page<BoardResponseForm> selectPostList(String boardCategory, String category, Pageable pageable);
+    Page<BoardResponseForm> selectPostListWithKeyword(String boardCategory, String category, String searchType, String searchKeyword, Pageable pageable);
 
     Page<ProfilePostResponseForm> selectProfilePostList(String author, Pageable pageable);
 

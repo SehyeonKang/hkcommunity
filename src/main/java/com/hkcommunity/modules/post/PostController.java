@@ -96,11 +96,14 @@ public class PostController {
     }
 
     @GetMapping("/announcement")
-    public String viewAnnouncementList(String searchKeyword, Pageable pageable, Model model) {
-        Page<BoardResponseForm> result = postService.selectPostList("announcement", searchKeyword, pageable);
+    public String viewAnnouncementList(String category, String searchType, String searchKeyword, Pageable pageable, Model model) {
+        Page<BoardResponseForm> result = postService.selectPostList("announcement", category, searchType, searchKeyword, pageable);
         model.addAttribute("list", result);
         model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("category", category);
         pageModelSetting(result, model);
+
         return "post/announcement/list";
     }
 
@@ -170,11 +173,14 @@ public class PostController {
     }
 
     @GetMapping("/dimension")
-    public String viewDimensionList(String searchKeyword, Pageable pageable, Model model) {
-        Page<BoardResponseForm> result = postService.selectPostList("dimension", searchKeyword, pageable);
+    public String viewDimensionList(String category, String searchType, String searchKeyword, Pageable pageable, Model model) {
+        Page<BoardResponseForm> result = postService.selectPostList("dimension", category, searchType, searchKeyword, pageable);
         model.addAttribute("list", result);
         model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("category", category);
         pageModelSetting(result, model);
+
         return "post/dimension/list";
     }
 
@@ -244,11 +250,14 @@ public class PostController {
     }
 
     @GetMapping("/arena")
-    public String viewArenaList(String searchKeyword, Pageable pageable, Model model) {
-        Page<BoardResponseForm> result = postService.selectPostList("arena", searchKeyword, pageable);
+    public String viewArenaList(String category, String searchType, String searchKeyword, Pageable pageable, Model model) {
+        Page<BoardResponseForm> result = postService.selectPostList("arena", category, searchType, searchKeyword, pageable);
         model.addAttribute("list", result);
         model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("category", category);
         pageModelSetting(result, model);
+
         return "post/arena/list";
     }
 
@@ -318,11 +327,14 @@ public class PostController {
     }
 
     @GetMapping("/realm")
-    public String viewRealmList(String searchKeyword, Pageable pageable, Model model) {
-        Page<BoardResponseForm> result = postService.selectPostList("realm", searchKeyword, pageable);
+    public String viewRealmList(String category, String searchType, String searchKeyword, Pageable pageable, Model model) {
+        Page<BoardResponseForm> result = postService.selectPostList("realm", category, searchType, searchKeyword, pageable);
         model.addAttribute("list", result);
         model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("category", category);
         pageModelSetting(result, model);
+
         return "post/realm/list";
     }
 

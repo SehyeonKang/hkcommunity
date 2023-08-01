@@ -1,9 +1,6 @@
 package com.hkcommunity.modules.post;
 
-import com.hkcommunity.modules.post.form.BoardResponseForm;
-import com.hkcommunity.modules.post.form.ProfilePostResponseForm;
-import com.hkcommunity.modules.post.form.QBoardResponseForm;
-import com.hkcommunity.modules.post.form.QProfilePostResponseForm;
+import com.hkcommunity.modules.post.form.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -24,11 +21,17 @@ public class PostRepositoryImpl implements CustomPostRepository{
         this.jpaQueryFactory = new JPAQueryFactory(em);
     }
 
+    @Override
+    public Page<BoardResponseForm> selectPostList(String boardCategory, String category, Pageable pageable) {
+        List<BoardResponseForm> content = getPostList(boardCategory, category, pageable);
+        Long count = getCount(boardCategory, category);
+        return new PageImpl<>(content, pageable, count);
+    }
 
     @Override
-    public Page<BoardResponseForm> selectPostList(String boardCategory, String searchKeyword, Pageable pageable) {
-        List<BoardResponseForm> content = getPostList(boardCategory, searchKeyword, pageable);
-        Long count = getCount(boardCategory, searchKeyword);
+    public Page<BoardResponseForm> selectPostListWithKeyword(String boardCategory, String category, String searchType, String searchKeyword, Pageable pageable) {
+        List<BoardResponseForm> content = getPostListWithKeyword(boardCategory, category, searchType, searchKeyword, pageable);
+        Long count = getCountWithKeyword(boardCategory, category, searchType, searchKeyword);
         return new PageImpl<>(content, pageable, count);
     }
 
@@ -69,12 +72,24 @@ public class PostRepositoryImpl implements CustomPostRepository{
         post.minusCommentCount();
     }
 
-    private Long getCount(String boardCategory, String searchKeyword) {
+    private Long getCount(String boardCategory, String category) {
         Long count = jpaQueryFactory
                 .select(post.count())
                 .from(post)
-                .where(containsSearchKeyword(searchKeyword)
-                        ,checkBoardCategory(boardCategory))
+                .where(checkBoardCategory(boardCategory),
+                        checkPostCategory(category))
+                .fetchOne();
+
+        return count;
+    }
+
+    private Long getCountWithKeyword(String boardCategory, String category, String searchType, String searchKeyword) {
+        Long count = jpaQueryFactory
+                .select(post.count())
+                .from(post)
+                .where(containsSearchKeyword(searchType, searchKeyword),
+                        checkBoardCategory(boardCategory),
+                        checkPostCategory(category))
                 .fetchOne();
 
         return count;
@@ -90,7 +105,8 @@ public class PostRepositoryImpl implements CustomPostRepository{
         return count;
     }
 
-    private List<BoardResponseForm> getPostList(String boardCategory, String searchKeyword, Pageable pageable) {
+    private List<BoardResponseForm> getPostList(String boardCategory, String category, Pageable pageable) {
+
         List<BoardResponseForm> content = jpaQueryFactory
                 .select(new QBoardResponseForm(
                         post.id,
@@ -103,8 +119,33 @@ public class PostRepositoryImpl implements CustomPostRepository{
                         post.publishedDateTime))
                 .from(post)
                 .leftJoin(post.author, account)
-                .where(containsSearchKeyword(searchKeyword)
-                        , checkBoardCategory(boardCategory))
+                .where(checkBoardCategory(boardCategory),
+                        checkPostCategory(category))
+                .orderBy(post.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        return content;
+    }
+
+    private List<BoardResponseForm> getPostListWithKeyword(String boardCategory, String category, String searchType, String searchKeyword, Pageable pageable) {
+
+        List<BoardResponseForm> content = jpaQueryFactory
+                .select(new QBoardResponseForm(
+                        post.id,
+                        post.viewCount,
+                        post.likeCount,
+                        post.commentCount,
+                        post.title,
+                        post.postCategory,
+                        account.nickname,
+                        post.publishedDateTime))
+                .from(post)
+                .leftJoin(post.author, account)
+                .where(containsSearchKeyword(searchType, searchKeyword),
+                        checkBoardCategory(boardCategory),
+                        checkPostCategory(category))
                 .orderBy(post.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -131,11 +172,39 @@ public class PostRepositoryImpl implements CustomPostRepository{
         return content;
     }
 
-    private BooleanExpression containsSearchKeyword(String searchKeyword) {
-        return searchKeyword != null ? post.title.contains(searchKeyword) : null;
+    private BooleanExpression containsSearchKeyword(String searchType, String searchKeyword) {
+
+        if (searchType.equals(PostSearchType.ALL.getValue())) {
+            return searchKeyword != null ? 
+                    post.title.contains(searchKeyword)
+                            .or(post.content.contains(searchKeyword))
+                            .or(post.author.nickname.contains(searchKeyword))
+                    : null;
+
+        } else if (searchType.equals(PostSearchType.TITLE.getValue())) {
+            return searchKeyword != null ? post.title.contains(searchKeyword) : null;
+
+        } else if (searchType.equals(PostSearchType.CONTENT.getValue())) {
+            return searchKeyword != null ? post.content.contains(searchKeyword) : null;
+
+        } else if (searchType.equals(PostSearchType.TITCON.getValue())) {
+            return searchKeyword != null ?
+                    post.title.contains(searchKeyword)
+                            .or(post.content.contains(searchKeyword))
+                    :null;
+
+        } else if (searchType.equals(PostSearchType.AUTHOR.getValue())) {
+            return searchKeyword != null ? post.author.nickname.contains(searchKeyword) : null;
+        }
+
+        return null;
     }
 
     private BooleanExpression checkBoardCategory(String boardCategory) {
          return post.boardCategory.eq(boardCategory);
+    }
+
+    private BooleanExpression checkPostCategory(String category) {
+        return category != null ? post.postCategory.eq(category) : null;
     }
 }

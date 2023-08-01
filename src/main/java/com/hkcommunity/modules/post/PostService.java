@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -54,15 +55,18 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BoardResponseForm> selectPostList(String boardCategory, String searchKeyword, Pageable pageable) {
-        return postRepository.selectPostList(boardCategory, searchKeyword, pageable);
+    public Page<BoardResponseForm> selectPostList(String boardCategory, String category, String searchType, String searchKeyword, Pageable pageable) {
+        if (StringUtils.hasText(searchKeyword)) {
+            return postRepository.selectPostListWithKeyword(boardCategory, category, searchType, searchKeyword, pageable);
+        } else {
+            return postRepository.selectPostList(boardCategory, category, pageable);
+        }
     }
 
     @Transactional(readOnly = true)
     public Page<ProfilePostResponseForm> selectProfilePostList(String author, Pageable pageable) {
         return postRepository.selectProfilePostList(author, pageable);
     }
-
 
     @Transactional(readOnly = true)
     public Post getPostToUpdate(Account account, Long postId) {
@@ -73,6 +77,7 @@ public class PostService {
 
         return post;
     }
+
     @Transactional(readOnly = true)
     public Post getPostToDelete(Account account, Long postId) {
         Post post = this.getPost(postId);
