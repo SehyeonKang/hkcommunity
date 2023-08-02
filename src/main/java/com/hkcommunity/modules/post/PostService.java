@@ -43,6 +43,7 @@ public class PostService {
         PostResponseForm postResponseForm = PostResponseForm.builder()
                 .id(post.getId())
                 .author(post.getAuthor().getNickname())
+                .authorProfileImage(post.getAuthor().getProfileImage())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .postCategory(post.getPostCategory())

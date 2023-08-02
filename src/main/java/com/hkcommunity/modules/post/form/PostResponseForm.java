@@ -10,6 +10,7 @@ public class PostResponseForm {
     private Long id;
     private Long viewCount;
     private String author;
+    private String authorProfileImage;
     private String title;
     private String content;
     private String postCategory;
