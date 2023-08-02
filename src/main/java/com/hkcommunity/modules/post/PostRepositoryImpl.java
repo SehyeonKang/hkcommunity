@@ -1,5 +1,6 @@
 package com.hkcommunity.modules.post;
 
+import com.hkcommunity.modules.account.Account;
 import com.hkcommunity.modules.post.form.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -40,6 +41,11 @@ public class PostRepositoryImpl implements CustomPostRepository{
         List<ProfilePostResponseForm> content = getProfilePostList(author, pageable);
         Long count = getProfilePostCount(author);
         return new PageImpl<>(content, pageable, count);
+    }
+
+    @Override
+    public void addAuthor(Account account, Post post) {
+        post.addAuthor(account);
     }
 
     @Override

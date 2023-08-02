@@ -1,11 +1,14 @@
 package com.hkcommunity.modules.comment;
 
 import com.hkcommunity.modules.account.Account;
+import com.hkcommunity.modules.account.form.AccountDto;
+import com.hkcommunity.modules.comment.event.CommentCreatedEvent;
 import com.hkcommunity.modules.comment.form.CommentUpdateRequest;
 import com.hkcommunity.modules.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -88,5 +91,19 @@ public class Comment {
 
     private boolean isDeletableParent() {
         return getParent() != null && getParent().isDeleted();
+    }
+
+    public void publishCreatedEvent(ApplicationEventPublisher eventPublisher) {
+        eventPublisher.publishEvent(
+                new CommentCreatedEvent(
+                        AccountDto.toDto(getAccount()),
+                        AccountDto.toDto(getPost().getAuthor()),
+                        Optional.ofNullable(getParent()).map(p -> p.getAccount()).map(a -> AccountDto.toDto(a)).orElseGet(() -> AccountDto.empty()),
+                        getPost().getId(),
+                        getPost().getTitle(),
+                        getContent(),
+                        getCreatedDateTime()
+                )
+        );
     }
 }

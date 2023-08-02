@@ -6,6 +6,7 @@ import com.hkcommunity.modules.account.form.AccountDto;
 import com.hkcommunity.modules.comment.form.*;
 import com.hkcommunity.modules.post.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class CommentService {
     private final AccountRepository accountRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public List<CommentDto> readAll(Long postId) {
@@ -54,6 +56,7 @@ public class CommentService {
     public void create(CommentCreateRequest request) {
         Comment comment = commentRepository.save(CommentCreateRequest.toEntity(request, accountRepository, postRepository, commentRepository));
         postRepository.plusCommentCount(comment.getPost());
+        comment.publishCreatedEvent(eventPublisher);
     }
 
     public void update(Long id, CommentUpdateRequest request) {

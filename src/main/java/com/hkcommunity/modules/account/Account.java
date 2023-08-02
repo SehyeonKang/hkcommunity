@@ -1,5 +1,6 @@
 package com.hkcommunity.modules.account;
 
+import com.hkcommunity.modules.comment.Comment;
 import com.hkcommunity.modules.post.Post;
 import lombok.*;
 
@@ -41,6 +42,10 @@ public class Account {
     @Builder.Default
     @OneToMany(mappedBy = "author")
     private List<Post> posts = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "account")
+    private List<Comment> comments = new ArrayList<>();
 
     public Account(String email, String nickname, String userId, String password) {
         this.email = email;

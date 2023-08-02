@@ -28,7 +28,7 @@ public class PostService {
 
     public Post createNewPost(Post post, Account account) {
         Post newPost = postRepository.save(post);
-        newPost.addAuthor(account);
+        postRepository.addAuthor(account, newPost);
         return newPost;
     }
 
