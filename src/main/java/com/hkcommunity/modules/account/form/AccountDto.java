@@ -13,12 +13,13 @@ public class AccountDto {
     private String email;
     private String userId;
     private String nickname;
+    private String profileImage;
 
     public static AccountDto toDto(Account account) {
-        return new AccountDto(account.getId(), account.getEmail(), account.getUserId(), account.getNickname());
+        return new AccountDto(account.getId(), account.getEmail(), account.getUserId(), account.getNickname(), account.getProfileImage());
     }
 
     public static AccountDto empty() {
-        return new AccountDto(null, "", "", "");
+        return new AccountDto(null, "", "", "", "");
     }
 }
