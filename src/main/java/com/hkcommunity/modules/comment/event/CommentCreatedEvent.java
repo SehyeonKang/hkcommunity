@@ -14,6 +14,7 @@ public class CommentCreatedEvent {
     private AccountDto postWriter;
     private AccountDto parentWriter;
     private Long postId;
+    private String postBoardCategory;
     private String postTitle;
     private String content;
     private LocalDateTime createdDateTime;

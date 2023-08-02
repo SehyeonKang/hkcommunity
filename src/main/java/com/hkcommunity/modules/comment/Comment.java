@@ -100,6 +100,7 @@ public class Comment {
                         AccountDto.toDto(getPost().getAuthor()),
                         Optional.ofNullable(getParent()).map(p -> p.getAccount()).map(a -> AccountDto.toDto(a)).orElseGet(() -> AccountDto.empty()),
                         getPost().getId(),
+                        getPost().getBoardCategory(),
                         getPost().getTitle(),
                         getContent(),
                         getCreatedDateTime()

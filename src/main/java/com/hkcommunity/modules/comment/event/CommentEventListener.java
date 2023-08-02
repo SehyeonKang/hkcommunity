@@ -25,23 +25,23 @@ public class CommentEventListener {
         log.info("CommentEventListener.handleNotification");
 
         if (isAbleToSendToPostWriter(event)) {
-            noticeToPostWriter(event.getPublisher(), event.getPostWriter(), event.getPostId(), event.getPostTitle(), event.getContent(), event.getCreatedDateTime());
+            noticeToPostWriter(event.getPublisher(), event.getPostWriter(), event.getPostId(), event.getPostBoardCategory(), event.getPostTitle(), event.getContent(), event.getCreatedDateTime());
         }
 
         if (isAbleToSendToParentWriter(event)) {
-            noticeToParentWriter(event.getPublisher(), event.getParentWriter(), event.getPostId(), event.getPostTitle(), event.getContent(), event.getCreatedDateTime());
+            noticeToParentWriter(event.getPublisher(), event.getParentWriter(), event.getPostId(), event.getPostBoardCategory(), event.getPostTitle(), event.getContent(), event.getCreatedDateTime());
         }
 
         throw new RuntimeException();
     }
 
-    private void noticeToPostWriter(AccountDto publisherDto, AccountDto postWriterDto, Long postId, String postTitle, String content, LocalDateTime createdDateTime) {
-        NotificationDto notificationDto = new NotificationDto(publisherDto, postWriterDto, postId, postTitle, content, createdDateTime);
+    private void noticeToPostWriter(AccountDto publisherDto, AccountDto postWriterDto, Long postId, String postBoardCategory, String postTitle, String content, LocalDateTime createdDateTime) {
+        NotificationDto notificationDto = new NotificationDto(publisherDto, postWriterDto, postId, postBoardCategory, postTitle, content, createdDateTime);
         notificationService.saveNotificationToPostWriter(publisherDto, postWriterDto, notificationDto);
     }
 
-    private void noticeToParentWriter(AccountDto publisherDto, AccountDto parentWriterDto, Long postId, String postTitle, String content, LocalDateTime createdDateTime) {
-        NotificationDto notificationDto = new NotificationDto(publisherDto, parentWriterDto, postId, postTitle, content, createdDateTime);
+    private void noticeToParentWriter(AccountDto publisherDto, AccountDto parentWriterDto, Long postId, String postBoardCategory, String postTitle, String content, LocalDateTime createdDateTime) {
+        NotificationDto notificationDto = new NotificationDto(publisherDto, parentWriterDto, postId, postBoardCategory, postTitle, content, createdDateTime);
         notificationService.saveNotificationToParentWriter(publisherDto, parentWriterDto, notificationDto);
     }
 

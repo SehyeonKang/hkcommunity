@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,7 +17,7 @@ public class Notification {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long postId;
+    private String postLink;
 
     private String postTitle;
 
@@ -33,14 +32,14 @@ public class Notification {
     @ManyToOne(fetch = FetchType.LAZY)
     private Account account;
 
-    private LocalDateTime createdDateTime;
+    private String createdDateTime;
 
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
 
     @Builder
-    public Notification(Long postId, String postTitle, String content, String publisher, String publisherProfileImage, Account account, LocalDateTime createdDateTime, NotificationType notificationType) {
-        this.postId = postId;
+    public Notification(String postLink, String postTitle, String content, String publisher, String publisherProfileImage, Account account, String createdDateTime, NotificationType notificationType) {
+        this.postLink = postLink;
         this.postTitle = postTitle;
         this.content = content;
         this.publisher = publisher;
@@ -49,5 +48,9 @@ public class Notification {
         this.account = account;
         this.createdDateTime = createdDateTime;
         this.notificationType = notificationType;
+    }
+
+    public void changeReadCondition(boolean checked) {
+        this.checked = checked;
     }
 }

@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 import static com.hkcommunity.modules.notification.NotificationType.COMMENT;
 import static com.hkcommunity.modules.notification.NotificationType.REPLY;
 
@@ -28,15 +31,16 @@ public class NotificationService {
         String publisher = publisherDto.getNickname();
         String publisherProfileImage = publisherDto.getProfileImage();
         Account account = accountRepository.findById(postWriterDto.getId()).get();
+        String convertedCreatedDateTime = notificationDto.getCreatedDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
         Notification notification = Notification.builder()
-                .postId(notificationDto.getPostId())
+                .postLink("/" + notificationDto.getPostBoardCategory() + "/" + notificationDto.getPostId())
                 .postTitle(notificationDto.getPostTitle())
                 .content(notificationDto.getContent())
                 .publisher(publisher)
                 .publisherProfileImage(publisherProfileImage)
                 .account(account)
-                .createdDateTime(notificationDto.getCreatedDateTime())
+                .createdDateTime(convertedCreatedDateTime)
                 .notificationType(COMMENT)
                 .build();
 
@@ -50,18 +54,24 @@ public class NotificationService {
         String publisher = publisherDto.getNickname();
         String publisherProfileImage = publisherDto.getProfileImage();
         Account account = accountRepository.findById(parentWriterDto.getId()).get();
+        String convertedCreatedDateTime = notificationDto.getCreatedDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
         Notification notification = Notification.builder()
-                .postId(notificationDto.getPostId())
+                .postLink("/" + notificationDto.getPostBoardCategory() + "/" + notificationDto.getPostId())
                 .postTitle(notificationDto.getPostTitle())
                 .content(notificationDto.getContent())
                 .publisher(publisher)
                 .publisherProfileImage(publisherProfileImage)
                 .account(account)
-                .createdDateTime(notificationDto.getCreatedDateTime())
+                .createdDateTime(convertedCreatedDateTime)
                 .notificationType(REPLY)
                 .build();
 
         notificationRepository.save(notification);
+    }
+
+    public void changeReadCondition(List<Notification> notifications) {
+        notifications.forEach(n -> notificationRepository.changeReadCondition(n, true));
+        notificationRepository.saveAll(notifications);
     }
 }

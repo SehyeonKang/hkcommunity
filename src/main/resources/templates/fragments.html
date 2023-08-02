@@ -85,6 +85,11 @@
             float: left;
         }
 
+        #notificationData {
+            display: inline-block;
+            float: left;
+        }
+
         #postPublishedTime,
         #postViewCount,
         #postLikeCount {
@@ -271,6 +276,26 @@
         </button>
     </div>
 </div>
+
+<ul th:fragment="notification-list (notifications)" class="list-group list-group-flush">
+    <a href="#" th:href="@{${noti.postLink}}" th:each="noti: ${notifications}" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+            <small class="text-muted" th:text="${noti.postTitle}">댓글이 작성된 게시글 제목</small>
+            <small class="text-muted" th:text="${noti.createdDateTime}">댓글 작성일</small>
+        </div>
+        <span class="mb-0 mt-3" id="notificationData">
+            <svg th:if="${#strings.isEmpty(noti.publisherProfileImage)}" th:data-jdenticon-value="${noti.publisher}"
+                 width="20" height="20" class="rounded border bg-light"></svg>
+            <img th:if="${!#strings.isEmpty(noti.publisherProfileImage)}" th:src="${noti.publisherProfileImage}"
+                 width="20" height="20" class="rounded border"/>
+            <span th:if="${noti.notificationType == T(com.hkcommunity.modules.notification.NotificationType).COMMENT}"
+                  th:text="${noti.publisher} + ' 님이 댓글을 작성했습니다'">댓글 작성자</span>
+            <span th:if="${noti.notificationType == T(com.hkcommunity.modules.notification.NotificationType).REPLY}"
+                  th:text="${noti.publisher} + ' 님이 답글을 작성했습니다'">댓글 작성자</span>
+            <p th:text="${noti.content}" class="text-left mb-0 mt-2">댓글 내용</p>
+        </span>
+    </a>
+</ul>
 
 <footer th:fragment="footer">
     <div class="row justify-content-center pt-5">

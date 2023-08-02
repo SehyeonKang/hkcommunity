@@ -13,6 +13,7 @@ public class NotificationDto {
     private AccountDto publisher;
     private AccountDto target;
     private Long postId;
+    private String postBoardCategory;
     private String postTitle;
     private String content;
     private LocalDateTime createdDateTime;
