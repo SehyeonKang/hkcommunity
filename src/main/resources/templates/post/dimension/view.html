@@ -154,7 +154,7 @@
                   commentHtml += `
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
-                                        <svg class="img-fluid float-left rounded img-thumbnail mr-1" data-jdenticon-value="${row.account.nickname}" width="25" height="25"></svg>
+                                        <svg class="img-fluid float-left rounded mr-1" data-jdenticon-value="${row.account.nickname}" width="25" height="25"></svg>
                                         <span class="comment-writer"><span class="card-text">${row.account.nickname}</span></span>
                                         <a sec:authorize="isAuthenticated()">
                                             <a class="comment-delete" onclick="deleteComment(${row.id});"><i class="bi bi-trash3"></i><span class="card-text ml-1">삭제</span></a>
@@ -185,7 +185,7 @@
                   commentHtml += `
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
-                                        <img class="img-fluid float-left rounded img-thumbnail mr-1" src="${row.account.profileImage}" width="25" height="25"/>
+                                        <img class="img-fluid float-left rounded mr-1" src="${row.account.profileImage}" width="25" height="25"/>
                                         <span class="comment-writer"><span class="card-text">${row.account.nickname}</span></span>
                                         <a sec:authorize="isAuthenticated()">
                                             <a class="comment-delete" onclick="deleteComment(${row.id});"><i class="bi bi-trash3"></i><span class="card-text ml-1">삭제</span></a>
@@ -218,7 +218,7 @@
                   commentHtml += `
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
-                                        <svg class="img-fluid float-left rounded img-thumbnail mr-1" data-jdenticon-value="${row.account.nickname}" width="25" height="25"></svg>
+                                        <svg class="img-fluid float-left rounded mr-1" data-jdenticon-value="${row.account.nickname}" width="25" height="25"></svg>
                                         <span class="comment-writer"><span class="card-text">${row.account.nickname}</span></span>
                                         <a class="comment-reply" onclick="findReplyComment(${row.id})"><i class="fa fa-comment fa"></i><span class="card-text ml-1">답글</span></a>
                                         <span class="date" id="commentDate">${dayjs(row.createdDateTime).format('YYYY-MM-DD HH:mm')}</span>
@@ -245,7 +245,7 @@
                   commentHtml += `
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
-                                        <img class="img-fluid float-left rounded img-thumbnail mr-1" src="${row.account.profileImage}" width="25" height="25"/>
+                                        <img class="img-fluid float-left rounded mr-1" src="${row.account.profileImage}" width="25" height="25"/>
                                         <span class="comment-writer"><span class="card-text">${row.account.nickname}</span></span>
                                         <a class="comment-reply" onclick="findReplyComment(${row.id})"><i class="fa fa-comment fa"></i><span class="card-text ml-1">답글</span></a>
                                         <span class="date" id="commentDate">${dayjs(row.createdDateTime).format('YYYY-MM-DD HH:mm')}</span>
@@ -318,7 +318,7 @@
             commentHtml += `
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
-                                        <svg class="img-fluid float-left rounded img-thumbnail mr-1" data-jdenticon-value="${child.account.nickname}" width="25" height="25"></svg>
+                                        <svg class="img-fluid float-left rounded mr-1" data-jdenticon-value="${child.account.nickname}" width="25" height="25"></svg>
                                         <span class="comment-writer"><span class="card-text">${child.account.nickname}</span></span>
                                         <a sec:authorize="isAuthenticated()">
                                             <a class="comment-delete" onclick="deleteComment(${child.id});"><i class="bi bi-trash3"></i><span class="card-text ml-1">삭제</span></a>
@@ -347,7 +347,7 @@
             commentHtml += `
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
-                                        <img class="img-fluid float-left rounded img-thumbnail mr-1" src="${child.account.profileImage}" width="25" height="25"/>
+                                        <img class="img-fluid float-left rounded mr-1" src="${child.account.profileImage}" width="25" height="25"/>
                                         <span class="comment-writer"><span class="card-text">${child.account.nickname}</span></span>
                                         <a sec:authorize="isAuthenticated()">
                                             <a class="comment-delete" onclick="deleteComment(${child.id});"><i class="bi bi-trash3"></i><span class="card-text ml-1">삭제</span></a>
@@ -378,7 +378,7 @@
             commentHtml += `
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
-                                        <svg class="img-fluid float-left rounded img-thumbnail mr-1" data-jdenticon-value="${child.account.nickname}" width="25" height="25"></svg>
+                                        <svg class="img-fluid float-left rounded mr-1" data-jdenticon-value="${child.account.nickname}" width="25" height="25"></svg>
                                         <span class="comment-writer"><span class="card-text">${child.account.nickname}</span></span>
                                         <a class="comment-reply" onclick="findReplyComment(${child.id})"><i class="fa fa-comment fa"></i><span class="card-text ml-1">답글</span></a>
                                         <span class="date" id="commentDate">${dayjs(child.createdDateTime).format('YYYY-MM-DD HH:mm')}</span>
@@ -403,7 +403,7 @@
             commentHtml += `
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
-                                        <img class="img-fluid float-left rounded img-thumbnail mr-1" src="${child.account.profileImage}" width="25" height="25"/>
+                                        <img class="img-fluid float-left rounded mr-1" src="${child.account.profileImage}" width="25" height="25"/>
                                         <span class="comment-writer"><span class="card-text">${child.account.nickname}</span></span>
                                         <a class="comment-reply" onclick="findReplyComment(${child.id})"><i class="fa fa-comment fa"></i><span class="card-text ml-1">답글</span></a>
                                         <span class="date" id="commentDate">${dayjs(child.createdDateTime).format('YYYY-MM-DD HH:mm')}</span>
