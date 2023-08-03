@@ -48,6 +48,7 @@ public class PostService {
                 .content(post.getContent())
                 .postCategory(post.getPostCategory())
                 .viewCount(post.getViewCount())
+                .commentCount(post.getCommentCount())
                 .publishedDateTime(convertedPublishedDateTime)
                 .authorChecked(authorCheck)
                 .build();

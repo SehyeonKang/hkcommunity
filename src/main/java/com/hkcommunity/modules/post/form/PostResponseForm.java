@@ -9,6 +9,7 @@ public class PostResponseForm {
 
     private Long id;
     private Long viewCount;
+    private Long commentCount;
     private String author;
     private String authorProfileImage;
     private String title;

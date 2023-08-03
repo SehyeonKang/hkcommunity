@@ -26,9 +26,20 @@
                      width="20" height="20" class="rounded border"/>
               </span>
               <span class="card-text" id="postAuthor" th:text="${post.author}">작성자</span>
-              <span class="card-text" id="postLikeCount" th:text="${likeCount}">좋아요 수</span>
-              <span class="card-text" id="postViewCount" th:text="${post.viewCount}">조회수</span>
-              <span class="card-text" id="postPublishedTime" th:text="${post.publishedDateTime}">게시일</span>
+              <span class="card-text" id="postCommentCount">
+                <span class="border-separator mr-2"></span>
+                <span class="commentText mr-1">댓글</span>
+                <span th:text="${post.commentCount}">댓글 수</span>
+              </span>
+              <span class="card-text" id="postViewCount">
+                <span class="border-separator mr-2"></span>
+                <span class="viewText mr-1">조회수</span>
+                <span th:text="${post.viewCount}">조회수</span>
+              </span>
+              <span class="card-text" id="postPublishedTime">
+                <span class="createdDateText mr-1">작성일</span>
+                <span th:text="${post.publishedDateTime}">작성일</span>
+              </span>
             </div>
           </div>
         </div>
