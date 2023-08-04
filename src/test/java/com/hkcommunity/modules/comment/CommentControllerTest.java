@@ -48,7 +48,7 @@ class CommentControllerTest extends AbstractContainerBaseTest {
 
         // when, then
         mockMvc.perform(
-                        get("/api/comments")
+                        get("/api/posts/{postId}/comments", String.valueOf(cond.getPostId()))
                                 .param("postId", String.valueOf(cond.getPostId())))
                 .andExpect(status().isOk());
 

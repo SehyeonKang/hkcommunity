@@ -64,6 +64,7 @@ public class Post {
         this.author = author;
         this.viewCount = 0L;
         this.likeCount = 0L;
+        this.commentCount = 0L;
     }
 
     public void addAuthor(Account account) {

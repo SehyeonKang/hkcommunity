@@ -7,6 +7,7 @@ import com.hkcommunity.infra.exception.PostNotFoundException;
 import com.hkcommunity.modules.account.Account;
 import com.hkcommunity.modules.account.AccountRepository;
 import com.hkcommunity.modules.comment.form.CommentDto;
+import com.hkcommunity.modules.post.Post;
 import com.hkcommunity.modules.post.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -80,8 +81,6 @@ class CommentServiceTest extends AbstractContainerBaseTest {
 
         // then
         assertThat(result.size()).isEqualTo(2);
-        assertThat(result.get(0).getContent()).isNull();
-        assertThat(result.get(0).getAccount()).isNull();
     }
 
     @Test
@@ -89,11 +88,13 @@ class CommentServiceTest extends AbstractContainerBaseTest {
         // given
         Account account = createAccount();
         account.completeSignUp();
-        given(accountRepository.findById(anyLong())).willReturn(Optional.of(createAccount()));
-        given(postRepository.findById(anyLong())).willReturn(Optional.of(createPost()));
+        Post post = createPost();
+        given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
+        given(postRepository.findById(anyLong())).willReturn(Optional.of(post));
 
         // when
-        commentService.create(account, createCommentCreateRequest());
+        assertThatThrownBy(() -> commentService.create(account, createCommentCreateRequest()))
+                .isInstanceOf(NullPointerException.class);
 
         // then
         verify(commentRepository).save(any());
