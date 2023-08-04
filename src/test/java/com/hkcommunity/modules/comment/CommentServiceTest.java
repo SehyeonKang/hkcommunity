@@ -4,6 +4,7 @@ import com.hkcommunity.infra.AbstractContainerBaseTest;
 import com.hkcommunity.infra.exception.AccountNotFoundException;
 import com.hkcommunity.infra.exception.CommentNotFoundException;
 import com.hkcommunity.infra.exception.PostNotFoundException;
+import com.hkcommunity.modules.account.Account;
 import com.hkcommunity.modules.account.AccountRepository;
 import com.hkcommunity.modules.comment.form.CommentDto;
 import com.hkcommunity.modules.post.PostRepository;
@@ -86,11 +87,13 @@ class CommentServiceTest extends AbstractContainerBaseTest {
     @Test
     void createTest() {
         // given
+        Account account = createAccount();
+        account.completeSignUp();
         given(accountRepository.findById(anyLong())).willReturn(Optional.of(createAccount()));
         given(postRepository.findById(anyLong())).willReturn(Optional.of(createPost()));
 
         // when
-        commentService.create(createCommentCreateRequest());
+        commentService.create(account, createCommentCreateRequest());
 
         // then
         verify(commentRepository).save(any());
@@ -99,33 +102,39 @@ class CommentServiceTest extends AbstractContainerBaseTest {
     @Test
     void createExceptionByAccountNotFoundTest() {
         // given
+        Account account = createAccount();
+        account.completeSignUp();
         given(accountRepository.findById(anyLong())).willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> commentService.create(createCommentCreateRequest()))
+        assertThatThrownBy(() -> commentService.create(account, createCommentCreateRequest()))
                 .isInstanceOf(AccountNotFoundException.class);
     }
 
     @Test
     void createExceptionByPostNotFoundTest() {
         // given
+        Account account = createAccount();
+        account.completeSignUp();
         given(accountRepository.findById(anyLong())).willReturn(Optional.of(createAccount()));
         given(postRepository.findById(anyLong())).willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> commentService.create(createCommentCreateRequest()))
+        assertThatThrownBy(() -> commentService.create(account, createCommentCreateRequest()))
                 .isInstanceOf(PostNotFoundException.class);
     }
 
     @Test
     void createExceptionByCommentNotFoundTest() {
         // given
+        Account account = createAccount();
+        account.completeSignUp();
         given(accountRepository.findById(anyLong())).willReturn(Optional.of(createAccount()));
         given(postRepository.findById(anyLong())).willReturn(Optional.of(createPost()));
         given(commentRepository.findById(anyLong())).willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> commentService.create(createCommentCreateRequestWithParentId(1L)))
+        assertThatThrownBy(() -> commentService.create(account, createCommentCreateRequestWithParentId(1L)))
                 .isInstanceOf(CommentNotFoundException.class);
     }
 

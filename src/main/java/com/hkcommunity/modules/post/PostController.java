@@ -32,6 +32,9 @@ public class PostController {
 
     @GetMapping("/announcement/write")
     public String newAnnouncementForm(@CurrentAccount Account account, Model model) {
+        if (!account.isEmailVerified()) {
+            return "redirect:/announcement";
+        }
         model.addAttribute(account);
         model.addAttribute(new PostForm());
         return "post/announcement/form";
@@ -96,8 +99,9 @@ public class PostController {
     }
 
     @GetMapping("/announcement")
-    public String viewAnnouncementList(String category, String searchType, String searchKeyword, Pageable pageable, Model model) {
+    public String viewAnnouncementList(@CurrentAccount Account account, String category, String searchType, String searchKeyword, Pageable pageable, Model model) {
         Page<BoardResponseForm> result = postService.selectPostList("announcement", category, searchType, searchKeyword, pageable);
+        model.addAttribute(account);
         model.addAttribute("list", result);
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("searchType", searchType);
@@ -109,6 +113,9 @@ public class PostController {
 
     @GetMapping("/dimension/write")
     public String newDimensionForm(@CurrentAccount Account account, Model model) {
+        if (!account.isEmailVerified()) {
+            return "redirect:/dimension";
+        }
         model.addAttribute(account);
         model.addAttribute(new PostForm());
         return "post/dimension/form";
@@ -173,8 +180,9 @@ public class PostController {
     }
 
     @GetMapping("/dimension")
-    public String viewDimensionList(String category, String searchType, String searchKeyword, Pageable pageable, Model model) {
+    public String viewDimensionList(@CurrentAccount Account account, String category, String searchType, String searchKeyword, Pageable pageable, Model model) {
         Page<BoardResponseForm> result = postService.selectPostList("dimension", category, searchType, searchKeyword, pageable);
+        model.addAttribute(account);
         model.addAttribute("list", result);
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("searchType", searchType);
@@ -186,6 +194,9 @@ public class PostController {
 
     @GetMapping("/arena/write")
     public String newArenaForm(@CurrentAccount Account account, Model model) {
+        if (!account.isEmailVerified()) {
+            return "redirect:/arena";
+        }
         model.addAttribute(account);
         model.addAttribute(new PostForm());
         return "post/arena/form";
@@ -250,8 +261,9 @@ public class PostController {
     }
 
     @GetMapping("/arena")
-    public String viewArenaList(String category, String searchType, String searchKeyword, Pageable pageable, Model model) {
+    public String viewArenaList(@CurrentAccount Account account, String category, String searchType, String searchKeyword, Pageable pageable, Model model) {
         Page<BoardResponseForm> result = postService.selectPostList("arena", category, searchType, searchKeyword, pageable);
+        model.addAttribute(account);
         model.addAttribute("list", result);
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("searchType", searchType);
@@ -263,6 +275,9 @@ public class PostController {
 
     @GetMapping("/realm/write")
     public String newRealmForm(@CurrentAccount Account account, Model model) {
+        if (!account.isEmailVerified()) {
+            return "redirect:/realm";
+        }
         model.addAttribute(account);
         model.addAttribute(new PostForm());
         return "post/realm/form";
@@ -327,8 +342,9 @@ public class PostController {
     }
 
     @GetMapping("/realm")
-    public String viewRealmList(String category, String searchType, String searchKeyword, Pageable pageable, Model model) {
+    public String viewRealmList(@CurrentAccount Account account, String category, String searchType, String searchKeyword, Pageable pageable, Model model) {
         Page<BoardResponseForm> result = postService.selectPostList("realm", category, searchType, searchKeyword, pageable);
+        model.addAttribute(account);
         model.addAttribute("list", result);
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("searchType", searchType);

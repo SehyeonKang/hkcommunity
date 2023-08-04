@@ -89,4 +89,8 @@ public class Account {
     public boolean isAuthor(Post post) {
         return post.getAuthor().equals(this);
     }
+
+    public boolean isPublisher(Comment comment) {
+        return comment.getAccount().equals(this);
+    }
 }

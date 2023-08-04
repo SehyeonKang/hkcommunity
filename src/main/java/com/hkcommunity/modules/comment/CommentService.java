@@ -1,6 +1,7 @@
 package com.hkcommunity.modules.comment;
 
 import com.hkcommunity.infra.exception.CommentNotFoundException;
+import com.hkcommunity.modules.account.Account;
 import com.hkcommunity.modules.account.AccountRepository;
 import com.hkcommunity.modules.account.form.AccountDto;
 import com.hkcommunity.modules.comment.form.*;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,19 +55,28 @@ public class CommentService {
         return commentRepository.selectProfileCommentList(author, pageable);
     }
 
-    public void create(CommentCreateRequest request) {
+    public void create(Account account, CommentCreateRequest request) {
+        if (!account.isEmailVerified()) {
+            throw new AccessDeniedException("이메일 인증을 완료한 사용자만 댓글 작성이 가능합니다.");
+        }
         Comment comment = commentRepository.save(CommentCreateRequest.toEntity(request, accountRepository, postRepository, commentRepository));
         postRepository.plusCommentCount(comment.getPost());
         comment.publishCreatedEvent(eventPublisher);
     }
 
-    public void update(Long id, CommentUpdateRequest request) {
+    public void update(Account account, Long id, CommentUpdateRequest request) {
         Comment comment = commentRepository.findById(id).orElseThrow(CommentNotFoundException::new);
+        if (!account.isPublisher(comment)) {
+            throw new AccessDeniedException("작성자만 댓글 수정이 가능합니다.");
+        }
         comment.update(request);
     }
 
-    public void delete(Long id) {
+    public void delete(Account account, Long id) {
         Comment comment = commentRepository.findById(id).orElseThrow(CommentNotFoundException::new);
+        if (!account.isPublisher(comment)) {
+            throw new AccessDeniedException("작성자만 댓글 삭제가 가능합니다.");
+        }
         postRepository.minusCommentCount(comment.getPost());
         comment.findDeletableComment().ifPresentOrElse(commentRepository::delete, comment::delete);
     }

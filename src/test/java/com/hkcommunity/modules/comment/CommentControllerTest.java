@@ -1,6 +1,7 @@
 package com.hkcommunity.modules.comment;
 
 import com.hkcommunity.infra.AbstractContainerBaseTest;
+import com.hkcommunity.modules.account.Account;
 import com.hkcommunity.modules.comment.form.CommentCreateRequest;
 import com.hkcommunity.modules.comment.form.CommentReadCondition;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
+import static com.hkcommunity.factory.AccountFactory.createAccount;
 import static com.hkcommunity.factory.CommentCreateRequestFactory.createCommentCreateRequestWithMemberId;
 import static com.hkcommunity.factory.CommentReadConditionFactory.createCommentReadCondition;
 import static org.mockito.Mockito.verify;
@@ -57,6 +59,8 @@ class CommentControllerTest extends AbstractContainerBaseTest {
     void createTest() throws Exception {
         // given
         CommentCreateRequest req = createCommentCreateRequestWithMemberId(null);
+        Account account = createAccount();
+        account.completeSignUp();
 
         // when, then
         mockMvc.perform(
@@ -65,18 +69,19 @@ class CommentControllerTest extends AbstractContainerBaseTest {
                                 .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isCreated());
 
-        verify(commentService).create(req);
+        verify(commentService).create(account, req);
     }
 
     @Test
     void deleteTest() throws Exception {
         // given
         Long id = 1L;
+        Account account = createAccount();
 
         // when, then
         mockMvc.perform(
                         delete("/api/comments/{id}", id))
                 .andExpect(status().isOk());
-        verify(commentService).delete(id);
+        verify(commentService).delete(account, id);
     }
 }

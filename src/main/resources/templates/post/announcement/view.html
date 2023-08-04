@@ -463,6 +463,7 @@
       const content = document.getElementById('content');
       const postId = [[ ${post.id} ]];
       const accountId = [[ ${account.id} ]];
+      const accountEmailVerified = [[ ${account.emailVerified} ]];
       const params = {
         content: content.value,
         postId: postId,
@@ -487,6 +488,9 @@
           console.log(response);
         },
         error: function (request, status, error) {
+          if (accountEmailVerified == false) {
+            alert("이메일 인증을 완료한 사용자만 댓글 작성이 가능합니다.")
+          }
           console.log(error);
         }
       })
@@ -641,6 +645,7 @@
       const content = document.getElementById('replyContent');
       const postId = [[ ${post.id} ]];
       const accountId = [[ ${account.id} ]];
+      const accountEmailVerified = [[ ${account.emailVerified} ]];
       const params = {
         content: content.value,
         postId: postId,
@@ -663,6 +668,10 @@
           console.log(response);
         },
         error: function (request, status, error) {
+          if (accountEmailVerified == false) {
+            alert("이메일 인증을 완료한 사용자만 댓글 작성이 가능합니다.")
+          }
+
           console.log(error);
         }
       })
@@ -696,5 +705,6 @@
 
     /*]]>*/
   </script>
+  <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
 </body>
 </html>

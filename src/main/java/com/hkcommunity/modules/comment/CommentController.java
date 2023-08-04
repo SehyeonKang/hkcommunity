@@ -1,6 +1,8 @@
 package com.hkcommunity.modules.comment;
 
 import com.hkcommunity.infra.dto.Response;
+import com.hkcommunity.modules.account.Account;
+import com.hkcommunity.modules.account.CurrentAccount;
 import com.hkcommunity.modules.comment.form.CommentCreateRequest;
 import com.hkcommunity.modules.comment.form.CommentUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,22 +31,22 @@ public class CommentController {
 
     @PostMapping("/api/comments")
     @ResponseStatus(HttpStatus.CREATED)
-    public Response create(@Valid @RequestBody CommentCreateRequest request) {
-        commentService.create(request);
+    public Response create(@CurrentAccount Account account, @Valid @RequestBody CommentCreateRequest request) {
+        commentService.create(account, request);
         return Response.success();
     }
 
     @PatchMapping("/api/comments/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Response update(@PathVariable Long id, @Valid @RequestBody CommentUpdateRequest request) {
-        commentService.update(id, request);
+    public Response update(@CurrentAccount Account account, @PathVariable Long id, @Valid @RequestBody CommentUpdateRequest request) {
+        commentService.update(account, id, request);
         return Response.success();
     }
 
     @DeleteMapping("/api/comments/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Response delete(@PathVariable Long id) {
-        commentService.delete(id);
+    public Response delete(@CurrentAccount Account account, @PathVariable Long id) {
+        commentService.delete(account, id);
         return Response.success();
     }
 }

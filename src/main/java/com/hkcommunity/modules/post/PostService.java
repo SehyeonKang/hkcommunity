@@ -27,6 +27,9 @@ public class PostService {
     private final ModelMapper modelMapper;
 
     public Post createNewPost(Post post, Account account) {
+        if (!account.isEmailVerified()) {
+            throw new AccessDeniedException("이메일 인증을 완료한 사용자만 게시글 작성이 가능합니다.");
+        }
         Post newPost = postRepository.save(post);
         postRepository.addAuthor(account, newPost);
         return newPost;

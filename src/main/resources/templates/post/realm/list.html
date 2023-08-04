@@ -71,7 +71,7 @@
                         <hr style="border: solid 1px rgb(196, 196, 196);">
 
                         <div class="d-flex justify-content-end">
-                            <a href="/realm/write" class="btn btn-primary">글쓰기</a>
+                            <a href="/realm/write" class="btn btn-primary" onclick="checkEmailVerified()">글쓰기</a>
                         </div>
 
                         <br>
@@ -169,5 +169,16 @@
         </div>
     </div>
     <div th:replace="fragments.html :: footer"></div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function checkEmailVerified() {
+            const accountEmailVerified = [[ ${account.emailVerified} ]];
+
+            if (accountEmailVerified == false) {
+                alert("이메일 인증을 완료한 사용자만 게시글 작성이 가능합니다.")
+            }
+        }
+        /*]]>*/
+    </script>
 </body>
 </html>
