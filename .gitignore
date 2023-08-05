@@ -40,3 +40,6 @@ out/
 src/main/resources/static/node_modules
 src/main/resources/static/node
 src/main/resources/application-dev.properties
+
+### TEST ###
+/src/test/java/com/hkcommunity/modules/comment/
