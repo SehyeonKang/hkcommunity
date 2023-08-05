@@ -17,6 +17,22 @@ cache:
 
 script: "./gradlew clean build"
 
+before_deploy:
+  - zip -r hkcommunity *
+  - mkdir -p deploy
+  - mv hkcommunity.zip deploy/hkcommunity.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # Travis settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis settings에 설정된 값
+    bucket: hkcommunity-build # S3 버킷
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private # zip 파일을 private로 접근
+    local_dir: deploy # befor_deploy에서 생성한 디렉토리. 해당 위치의 파일들만 S3로 전송
+    wait-until-deployed: true
+
 # CI 실행 완료 시 메일로 알림
 notifications:
   email:
