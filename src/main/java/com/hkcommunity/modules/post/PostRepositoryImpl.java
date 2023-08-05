@@ -7,6 +7,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -211,6 +212,6 @@ public class PostRepositoryImpl implements CustomPostRepository{
     }
 
     private BooleanExpression checkPostCategory(String category) {
-        return category != null ? post.postCategory.eq(category) : null;
+        return StringUtils.hasText(category) ? post.postCategory.eq(category) : null;
     }
 }
