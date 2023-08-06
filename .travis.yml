@@ -17,6 +17,7 @@ cache:
 script:
   - "cd src/main/resources/static"
   - "npm install"
+  - "ls"
   - "cd /home/travis/build/SehyeonKang/hkcommunity"
   - "./gradlew clean build"
 
