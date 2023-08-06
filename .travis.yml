@@ -33,6 +33,17 @@ deploy:
     local_dir: deploy # befor_deploy에서 생성한 디렉토리. 해당 위치의 파일들만 S3로 전송
     wait-until-deployed: true
 
+  - provider: codedeploy
+    assess_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: hkcommunity-build
+    key: hkcommunity.zip # 빌드 파일을 압축해서 전달
+    bundle_type: zip
+    application: hkcommunity # 웹 콘솔에서 등록한 CodeDeploy 애플리케이션
+    deployment_group: hkcommunity-group # 웹 콘솔에서 등록한 CodeDeploy 배포 그룹
+    region: ap-northeast-2
+    wait-until-deployed: true
+
 # CI 실행 완료 시 메일로 알림
 notifications:
   email:
