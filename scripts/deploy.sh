@@ -5,7 +5,7 @@ PROJECT_NAME=hkcommunity
 
 echo "> Build 파일 복사"
 
-cp $REPOSITORY/ZIP/*.jar $REPOSITORY/
+cp $REPOSITORY/zip/*.jar $REPOSITORY/
 
 echo "> 현재 구동중인 어플리케이션 pid 확인"
 
