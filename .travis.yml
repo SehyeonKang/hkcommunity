@@ -14,7 +14,11 @@ cache:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
 
-script: "./gradlew clean build"
+script:
+  - "cd src/main/resources/static"
+  - "npm install"
+  - "cd /home/travis/build/SehyeonKang/hkcommunity"
+  - "./gradlew clean build"
 
 before_deploy:
   - mkdir -p before-deploy
