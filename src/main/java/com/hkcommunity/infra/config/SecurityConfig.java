@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/api/comments/{id}").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/comments/{id}").authenticated()
                 .mvcMatchers("/", "/login", "/sign-up", "/check-email-token",
-                        "/email-login", "/login-by-email").permitAll()
+                        "/email-login", "/login-by-email", "/web-profile").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/profile/*").permitAll()
                 .anyRequest().authenticated();
 
