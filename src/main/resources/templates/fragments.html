@@ -8,14 +8,14 @@
     <meta name="_csrf" th:content="${_csrf.token}">
     <title>빌브이 아틀리에</title>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../static/node_modules/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../static/node_modules/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../static/node_modules/summernote/dist/summernote-bs4.min.css">
-    <link rel="stylesheet" href="../static/node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
-    <script src="../static/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../static/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../static/node_modules/jdenticon/dist/jdenticon.min.js"></script>
-    <script src="../static/node_modules/dayjs/dayjs.min.js"></script>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
+    <script src="/node_modules/dayjs/dayjs.min.js"></script>
     <style>
         .container {
             max-width: 100%;
@@ -312,7 +312,7 @@
     <div class="row justify-content-center pt-5">
         <small class="d-block mb-3 text-muted">&copy; 2023</small>
     </div>
-    <script src="../static/node_modules/jdenticon/dist/jdenticon.min.js"></script>
+    <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
 </footer>
 
 <script type="application/javascript" th:fragment="form-validation">
@@ -336,7 +336,7 @@
 </script>
 
 <div th:fragment="editor-script">
-    <script src="../static/node_modules/summernote/dist/summernote-bs4.js"></script>
+    <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
     <script type="application/javascript">
         $(function () {
             $('#content').summernote({
