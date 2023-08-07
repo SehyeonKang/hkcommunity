@@ -84,7 +84,7 @@
 
                         <br>
                         <div class="row justify-content-center">
-                            <input type="hidden" th:name="category" th:value="${category}">
+                            <input type="hidden" th:if="${category != null && category != ''}" th:name="category" th:value="${category}">
                             <select class="form-control col-sm-1" id="dataList" name="searchType" th:value="${searchType}">
                                 <option value="all">전체</option>
                                 <option value="title">제목</option>
@@ -104,68 +104,68 @@
                             <ul class="pagination">
 
                                 <li th:if="${start > 1}" class="page-item">
-                                    <a th:if="${category != null && searchKeyword != null} " th:href="@{/arena(page=0, category=${category}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Previous">
+                                    <a th:if="${category != null && searchKeyword != null} " th:href="@{/arena(page=1, category=${category}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;&laquo;</span>
                                     </a>
-                                    <a th:if="${category != null && searchKeyword == null}" th:href="@{/arena(page=0, category=${category})}" class="page-link" href="#" aria-label="Previous">
+                                    <a th:if="${category != null && searchKeyword == null}" th:href="@{/arena(page=1, category=${category})}" class="page-link" href="#" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;&laquo;</span>
                                     </a>
-                                    <a th:if="${category == null && searchKeyword != null}" th:href="@{/arena(page=0, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Previous">
+                                    <a th:if="${category == null && searchKeyword != null}" th:href="@{/arena(page=1, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;&laquo;</span>
                                     </a>
-                                    <a th:if="${category == null && searchKeyword == null}" th:href="@{/arena(page=0)}" class="page-link" href="#" aria-label="Previous">
+                                    <a th:if="${category == null && searchKeyword == null}" th:href="@{/arena(page=1)}" class="page-link" href="#" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;&laquo;</span>
                                     </a>
                                 </li>
 
                                 <li th:if="${start > 1}" class="page-item">
-                                    <a th:if="${category != null && searchKeyword != null}" th:href="@{/arena(page=${start - maxPage - 1}, category=${category}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Previous">
+                                    <a th:if="${category != null && searchKeyword != null}" th:href="@{/arena(page=${start - maxPage}, category=${category}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
-                                    <a th:if="${category != null && searchKeyword == null}" th:href="@{/arena(page=${start - maxPage - 1}, category=${category})}" class="page-link" href="#" aria-label="Previous">
+                                    <a th:if="${category != null && searchKeyword == null}" th:href="@{/arena(page=${start - maxPage}, category=${category})}" class="page-link" href="#" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
-                                    <a th:if="${category == null && searchKeyword != null}" th:href="@{/arena(page=${start - maxPage - 1}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Previous">
+                                    <a th:if="${category == null && searchKeyword != null}" th:href="@{/arena(page=${start - maxPage}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
-                                    <a th:if="${category == null && searchKeyword == null}" th:href="@{/arena(page=${start - maxPage - 1})}" class="page-link" href="#" aria-label="Previous">
+                                    <a th:if="${category == null && searchKeyword == null}" th:href="@{/arena(page=${start - maxPage})}" class="page-link" href="#" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
 
                                 <li th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${list.number+1 == page} ? active">
-                                    <a th:if="${category != null && searchKeyword != null}" th:href="@{/arena(page=${page - 1}, category=${category}, searchType=${searchType}, searchKeyword=${searchKeyword})}" th:text="${page}" class="page-link" href="#">1</a>
-                                    <a th:if="${category != null && searchKeyword == null}" th:href="@{/arena(page=${page - 1}, category=${category})}" th:text="${page}" class="page-link" href="#">1</a>
-                                    <a th:if="${category == null && searchKeyword != null}" th:href="@{/arena(page=${page - 1}, searchType=${searchType}, searchKeyword=${searchKeyword})}" th:text="${page}" class="page-link" href="#">1</a>
-                                    <a th:if="${category == null && searchKeyword == null}" th:href="@{/arena(page=${page - 1})}" th:text="${page}" class="page-link" href="#">1</a>
+                                    <a th:if="${category != null && searchKeyword != null}" th:href="@{/arena(page=${page}, category=${category}, searchType=${searchType}, searchKeyword=${searchKeyword})}" th:text="${page}" class="page-link" href="#">1</a>
+                                    <a th:if="${category != null && searchKeyword == null}" th:href="@{/arena(page=${page}, category=${category})}" th:text="${page}" class="page-link" href="#">1</a>
+                                    <a th:if="${category == null && searchKeyword != null}" th:href="@{/arena(page=${page}, searchType=${searchType}, searchKeyword=${searchKeyword})}" th:text="${page}" class="page-link" href="#">1</a>
+                                    <a th:if="${category == null && searchKeyword == null}" th:href="@{/arena(page=${page})}" th:text="${page}" class="page-link" href="#">1</a>
                                 </li>
 
                                 <li th:if="${end < list.totalPages}" class="page-item">
-                                    <a th:if="${category != null && searchKeyword != null}" th:href="@{/arena(page=${start + maxPage - 1}, category=${category}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Next">
+                                    <a th:if="${category != null && searchKeyword != null}" th:href="@{/arena(page=${start + maxPage}, category=${category}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
-                                    <a th:if="${category != null && searchKeyword == null}" th:href="@{/arena(page=${start + maxPage - 1}, category=${category})}" class="page-link" href="#" aria-label="Next">
+                                    <a th:if="${category != null && searchKeyword == null}" th:href="@{/arena(page=${start + maxPage}, category=${category})}" class="page-link" href="#" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
-                                    <a th:if="${category == null && searchKeyword != null}" th:href="@{/arena(page=${start + maxPage - 1}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Next">
+                                    <a th:if="${category == null && searchKeyword != null}" th:href="@{/arena(page=${start + maxPage}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
-                                    <a th:if="${category == null && searchKeyword == null}" th:href="@{/arena(page=${start + maxPage - 1})}" class="page-link" href="#" aria-label="Next">
+                                    <a th:if="${category == null && searchKeyword == null}" th:href="@{/arena(page=${start + maxPage})}" class="page-link" href="#" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>
 
                                 <li th:if="${end < list.totalPages}" class="page-item">
-                                    <a th:if="${category != null && searchKeyword != null}" th:href="@{/arena(page=${totalPages - 1}, category=${category}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Next">
+                                    <a th:if="${category != null && searchKeyword != null}" th:href="@{/arena(page=${totalPages}, category=${category}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Next">
                                         <span aria-hidden="true">&raquo;&raquo;</span>
                                     </a>
-                                    <a th:if="${category != null && searchKeyword == null}" th:href="@{/arena(page=${totalPages - 1}, category=${category})}" class="page-link" href="#" aria-label="Next">
+                                    <a th:if="${category != null && searchKeyword == null}" th:href="@{/arena(page=${totalPages}, category=${category})}" class="page-link" href="#" aria-label="Next">
                                         <span aria-hidden="true">&raquo;&raquo;</span>
                                     </a>
-                                    <a th:if="${category == null && searchKeyword != null}" th:href="@{/arena(page=${totalPages - 1}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Next">
+                                    <a th:if="${category == null && searchKeyword != null}" th:href="@{/arena(page=${totalPages}, searchType=${searchType}, searchKeyword=${searchKeyword})}" class="page-link" href="#" aria-label="Next">
                                         <span aria-hidden="true">&raquo;&raquo;</span>
                                     </a>
-                                    <a th:if="${category == null && searchKeyword == null}" th:href="@{/arena(page=${totalPages - 1})}" class="page-link" href="#" aria-label="Next">
+                                    <a th:if="${category == null && searchKeyword == null}" th:href="@{/arena(page=${totalPages})}" class="page-link" href="#" aria-label="Next">
                                         <span aria-hidden="true">&raquo;&raquo;</span>
                                     </a>
                                 </li>
