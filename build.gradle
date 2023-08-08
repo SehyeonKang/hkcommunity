@@ -42,7 +42,6 @@ dependencies {
 	//npm
 	implementation "com.moowork.gradle:gradle-node-plugin:1.3.1"
 
-	compile 'org.springframework.session:spring-session-jdbc'
 	compile 'org.mariadb.jdbc:mariadb-java-client'
 	compileOnly 'org.projectlombok:lombok'
 
