@@ -25,6 +25,7 @@ public class Notification {
 
     private String publisher;
 
+    @Lob
     private String publisherProfileImage;
 
     private boolean checked;
