@@ -450,9 +450,9 @@
 
     // 댓글 길이 카운팅
     function countingLength(content) {
-      if (content.value.length > 300) {
-        alert('댓글을 300자 이하로 입력해 주세요.');
-        content.value = content.value.substring(0, 300);
+      if (content.value.length > 200) {
+        alert('댓글을 200자 이하로 입력해 주세요.');
+        content.value = content.value.substring(0, 200);
         content.focus();
       }
     }
