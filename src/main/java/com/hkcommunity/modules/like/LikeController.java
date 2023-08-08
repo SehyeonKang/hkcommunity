@@ -27,6 +27,8 @@ public class LikeController {
             likeService.pushLikeButton(likeForm);
         }
 
-        return "redirect:/announcement/" + postId;
+        String redirectLink = "redirect:/" + post.getBoardCategory() + "/" + postId;
+
+        return redirectLink;
     }
 }
