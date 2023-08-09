@@ -167,7 +167,7 @@ public class AccountController {
     }
 
     private void pagePostModelSetting(Page<ProfilePostResponseForm> result, Model model) {
-        model.addAttribute("maxPage", 5);
+        model.addAttribute("maxPage", 10);
         model.addAttribute("totalCount", result.getTotalElements());
         model.addAttribute("size", result.getPageable().getPageSize());
         model.addAttribute("number", result.getPageable().getPageNumber());
@@ -175,7 +175,7 @@ public class AccountController {
     }
 
     private void pageCommentModelSetting(Page<ProfileCommentResponseForm> result, Model model) {
-        model.addAttribute("maxPage", 5);
+        model.addAttribute("maxPage", 10);
         model.addAttribute("totalCount", result.getTotalElements());
         model.addAttribute("size", result.getPageable().getPageSize());
         model.addAttribute("number", result.getPageable().getPageNumber());

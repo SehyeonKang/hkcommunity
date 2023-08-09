@@ -367,7 +367,7 @@ public class PostController {
     }
 
     private void pageModelSetting(Page<BoardResponseForm> result, Model model) {
-        model.addAttribute("maxPage", 5);
+        model.addAttribute("maxPage", 10);
         model.addAttribute("totalCount", result.getTotalElements());
         model.addAttribute("size", result.getPageable().getPageSize());
         model.addAttribute("number", result.getPageable().getPageNumber());
