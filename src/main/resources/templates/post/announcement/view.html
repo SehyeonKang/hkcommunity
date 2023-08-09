@@ -25,7 +25,7 @@
                 <img th:if="${!#strings.isEmpty(post.authorProfileImage)}" th:src="${post.authorProfileImage}"
                      width="20" height="20" class="rounded border"/>
               </span>
-              <span class="card-text" id="postAuthor" th:text="${post.author}">작성자</span>
+              <span class="card-text" id="postAuthor" th:text="${post.author}" th:onclick="|location.href='/profile/__${post.author}__'|">작성자</span>
               <span class="card-text" id="postCommentCount">
                 <span class="border-separator mr-2"></span>
                 <span class="commentText mr-1">댓글</span>
@@ -166,7 +166,7 @@
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
                                         <svg class="img-fluid float-left rounded mr-1" data-jdenticon-value="${row.account.nickname}" width="25" height="25"></svg>
-                                        <span class="comment-writer"><span class="card-text">${row.account.nickname}</span></span>
+                                        <span class="comment-writer"><span class="card-text" onclick="location.href='/profile/${row.account.nickname}'">${row.account.nickname}</span></span>
                                         <a sec:authorize="isAuthenticated()">
                                             <a class="comment-delete" onclick="deleteComment(${row.id});"><i class="bi bi-trash3"></i><span class="card-text ml-1">삭제</span></a>
                                             <a class="comment-edit" onclick="findEditComment(${row.id});"><i class="fa fa-pencil"></i><span class="card-text ml-1">수정</span></a>
@@ -197,7 +197,7 @@
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
                                         <img class="img-fluid float-left rounded mr-1" src="${row.account.profileImage}" width="25" height="25"/>
-                                        <span class="comment-writer"><span class="card-text">${row.account.nickname}</span></span>
+                                        <span class="comment-writer"><span class="card-text" onclick="location.href='/profile/${row.account.nickname}'">${row.account.nickname}</span></span>
                                         <a sec:authorize="isAuthenticated()">
                                             <a class="comment-delete" onclick="deleteComment(${row.id});"><i class="bi bi-trash3"></i><span class="card-text ml-1">삭제</span></a>
                                             <a class="comment-edit" onclick="findEditComment(${row.id});"><i class="fa fa-pencil"></i><span class="card-text ml-1">수정</span></a>
@@ -230,7 +230,7 @@
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
                                         <svg class="img-fluid float-left rounded mr-1" data-jdenticon-value="${row.account.nickname}" width="25" height="25"></svg>
-                                        <span class="comment-writer"><span class="card-text">${row.account.nickname}</span></span>
+                                        <span class="comment-writer"><span class="card-text" onclick="location.href='/profile/${row.account.nickname}'">${row.account.nickname}</span></span>
                                         <a class="comment-reply" onclick="findReplyComment(${row.id})"><i class="fa fa-comment fa"></i><span class="card-text ml-1">답글</span></a>
                                         <span class="date" id="commentDate">${dayjs(row.createdDateTime).format('YYYY-MM-DD HH:mm')}</span>
                                     </div>
@@ -257,7 +257,7 @@
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
                                         <img class="img-fluid float-left rounded mr-1" src="${row.account.profileImage}" width="25" height="25"/>
-                                        <span class="comment-writer"><span class="card-text">${row.account.nickname}</span></span>
+                                        <span class="comment-writer"><span class="card-text" onclick="location.href='/profile/${row.account.nickname}'">${row.account.nickname}</span></span>
                                         <a class="comment-reply" onclick="findReplyComment(${row.id})"><i class="fa fa-comment fa"></i><span class="card-text ml-1">답글</span></a>
                                         <span class="date" id="commentDate">${dayjs(row.createdDateTime).format('YYYY-MM-DD HH:mm')}</span>
                                     </div>
@@ -330,7 +330,7 @@
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
                                         <svg class="img-fluid float-left rounded mr-1" data-jdenticon-value="${child.account.nickname}" width="25" height="25"></svg>
-                                        <span class="comment-writer"><span class="card-text">${child.account.nickname}</span></span>
+                                        <span class="comment-writer"><span class="card-text" onclick="location.href='/profile/${child.account.nickname}'">${child.account.nickname}</span></span>
                                         <a sec:authorize="isAuthenticated()">
                                             <a class="comment-delete" onclick="deleteComment(${child.id});"><i class="bi bi-trash3"></i><span class="card-text ml-1">삭제</span></a>
                                             <a class="comment-edit" onclick="findEditComment(${child.id});"><i class="fa fa-pencil"></i><span class="card-text ml-1">수정</span></a>
@@ -359,7 +359,7 @@
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
                                         <img class="img-fluid float-left rounded mr-1" src="${child.account.profileImage}" width="25" height="25"/>
-                                        <span class="comment-writer"><span class="card-text">${child.account.nickname}</span></span>
+                                        <span class="comment-writer"><span class="card-text" onclick="location.href='/profile/${child.account.nickname}'">${child.account.nickname}</span></span>
                                         <a sec:authorize="isAuthenticated()">
                                             <a class="comment-delete" onclick="deleteComment(${child.id});"><i class="bi bi-trash3"></i><span class="card-text ml-1">삭제</span></a>
                                             <a class="comment-edit" onclick="findEditComment(${child.id});"><i class="fa fa-pencil"></i><span class="card-text ml-1">수정</span></a>
@@ -390,7 +390,7 @@
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
                                         <svg class="img-fluid float-left rounded mr-1" data-jdenticon-value="${child.account.nickname}" width="25" height="25"></svg>
-                                        <span class="comment-writer"><span class="card-text">${child.account.nickname}</span></span>
+                                        <span class="comment-writer"><span class="card-text" onclick="location.href='/profile/${child.account.nickname}'">${child.account.nickname}</span></span>
                                         <a class="comment-reply" onclick="findReplyComment(${child.id})"><i class="fa fa-comment fa"></i><span class="card-text ml-1">답글</span></a>
                                         <span class="date" id="commentDate">${dayjs(child.createdDateTime).format('YYYY-MM-DD HH:mm')}</span>
                                     </div>
@@ -415,7 +415,7 @@
                                 <div class="card py-0 mt-3">
                                     <div class="card-header bg-light">
                                         <img class="img-fluid float-left rounded mr-1" src="${child.account.profileImage}" width="25" height="25"/>
-                                        <span class="comment-writer"><span class="card-text">${child.account.nickname}</span></span>
+                                        <span class="comment-writer"><span class="card-text" onclick="location.href='/profile/${child.account.nickname}'">${child.account.nickname}</span></span>
                                         <a class="comment-reply" onclick="findReplyComment(${child.id})"><i class="fa fa-comment fa"></i><span class="card-text ml-1">답글</span></a>
                                         <span class="date" id="commentDate">${dayjs(child.createdDateTime).format('YYYY-MM-DD HH:mm')}</span>
                                     </div>
