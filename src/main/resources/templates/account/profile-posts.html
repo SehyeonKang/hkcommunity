@@ -66,29 +66,29 @@
                                 <ul class="pagination">
 
                                     <li th:if="${start > 1}" class="page-item">
-                                        <a th:href="@{/profile/{nickname}/posts(nickname=${accountToView.nickname}, page=0)}" class="page-link" href="#" aria-label="Previous">
+                                        <a th:href="@{/profile/{nickname}/posts(nickname=${accountToView.nickname}, page=1)}" class="page-link" href="#" aria-label="Previous">
                                             <span aria-hidden="true">&laquo;&laquo;</span>
                                         </a>
                                     </li>
 
                                     <li th:if="${start > 1}" class="page-item">
-                                        <a th:href="@{/profile/{nickname}/posts(nickname=${accountToView.nickname}, page=${start - maxPage - 1})}" class="page-link" href="#" aria-label="Previous">
+                                        <a th:href="@{/profile/{nickname}/posts(nickname=${accountToView.nickname}, page=${start - maxPage})}" class="page-link" href="#" aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
 
                                     <li th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${list.number+1 == page} ? active">
-                                        <a th:href="@{/profile/{nickname}/posts(nickname=${accountToView.nickname}, page=${page - 1})}" th:text="${page}" class="page-link" href="#">1</a>
+                                        <a th:href="@{/profile/{nickname}/posts(nickname=${accountToView.nickname}, page=${page})}" th:text="${page}" class="page-link" href="#">1</a>
                                     </li>
 
                                     <li th:if="${end < list.totalPages}" class="page-item">
-                                        <a th:href="@{/profile/{nickname}/posts(nickname=${accountToView.nickname}, page=${start + maxPage - 1})}" class="page-link" href="#" aria-label="Next">
+                                        <a th:href="@{/profile/{nickname}/posts(nickname=${accountToView.nickname}, page=${start + maxPage})}" class="page-link" href="#" aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
                                     </li>
 
                                     <li th:if="${end < list.totalPages}" class="page-item">
-                                        <a th:href="@{/profile/{nickname}/posts(nickname=${accountToView.nickname}, page=${totalPages - 1})}" class="page-link" href="#" aria-label="Next">
+                                        <a th:href="@{/profile/{nickname}/posts(nickname=${accountToView.nickname}, page=${totalPages})}" class="page-link" href="#" aria-label="Next">
                                             <span aria-hidden="true">&raquo;&raquo;</span>
                                         </a>
                                     </li>
