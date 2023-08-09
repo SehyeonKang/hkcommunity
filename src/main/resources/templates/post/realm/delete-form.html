@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row px-3 pt-5 justify-content-center">
             <h5 class="col-sm-8 text-danger">게시물 삭제</h5>
-            <form class="col-sm-8" action="#" th:action="@{'/dimension/' + ${post.getId()} + '/delete'}" method="post" novalidate>
+            <form class="col-sm-8" action="#" th:action="@{'/realm/' + ${post.getId()} + '/delete'}" method="post" novalidate>
                 <div class="alert alert-danger" role="alert">
                     <p th:text="${post.title}">게시글 제목</p>
                     <b>게시물을 삭제하면 관련 모든 기록을 삭제하며 복구할 수 없습니다.</b>
