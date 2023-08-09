@@ -254,9 +254,9 @@
 </nav>
 
 <div th:fragment="account-menu (currentMenu)" class="list-group">
-    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
-    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'posts'}? active" href="#" th:href="@{'/profile/' + ${#authentication.name} + '/posts'}">작성 글</a>
-    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'comments'}? active" href="#" th:href="@{'/profile/' + ${#authentication.name} + '/comments'}">작성 댓글</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#" th:href="@{'/profile/' + ${nickname}}">프로필</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'posts'}? active" href="#" th:href="@{'/profile/' + ${nickname} + '/posts'}">작성 글</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'comments'}? active" href="#" th:href="@{'/profile/' + ${nickname} + '/comments'}">작성 댓글</a>
 </div>
 
 <div th:fragment="settings-menu (currentMenu)" class="list-group">

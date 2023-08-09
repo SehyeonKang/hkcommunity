@@ -96,6 +96,8 @@ public class AccountController {
     @GetMapping("/profile/{nickname}")
     public String viewProfile(@PathVariable String nickname, Model model, @CurrentAccount Account account) {
         Account accountToView = accountService.getAccount(nickname);
+
+        model.addAttribute(nickname);
         model.addAttribute(accountToView);
         model.addAttribute("isOwner", accountToView.equals(account));
         return "account/profile";
@@ -106,6 +108,7 @@ public class AccountController {
         Account accountToView = accountService.getAccount(nickname);
         Page<ProfilePostResponseForm> result = postService.selectProfilePostList(nickname, pageable);
 
+        model.addAttribute(nickname);
         model.addAttribute("accountToView", accountToView);
         model.addAttribute("isOwner", accountToView.equals(account));
         model.addAttribute("list", result);
@@ -118,6 +121,7 @@ public class AccountController {
         Account accountToView = accountService.getAccount(nickname);
         Page<ProfileCommentResponseForm> result = commentService.selectProfileCommentList(nickname, pageable);
 
+        model.addAttribute(nickname);
         model.addAttribute("accountToView", accountToView);
         model.addAttribute("isOwner", accountToView.equals(account));
         model.addAttribute("list", result);
