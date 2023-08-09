@@ -24,6 +24,7 @@ public class NotificationController {
         long numberOfChecked = repository.countByAccountAndChecked(account, true);
         putCategorizedNotifications(model, notifications, numberOfChecked, notifications.size());
 
+        model.addAttribute(account);
         model.addAttribute("isNew", true);
         service.changeReadCondition(notifications);
 
@@ -36,6 +37,7 @@ public class NotificationController {
         long numberOfNotChecked = repository.countByAccountAndChecked(account, false);
         putCategorizedNotifications(model, notifications, notifications.size(), numberOfNotChecked);
 
+        model.addAttribute(account);
         model.addAttribute("isNew", false);
         return "notification/list";
     }
