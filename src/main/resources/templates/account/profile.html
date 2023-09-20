@@ -6,15 +6,16 @@
   <div class="container">
     <div class="row mt-5 justify-content-center">
       <div class="col-2">
-        <svg th:if="${#strings.isEmpty(account.profileImage)}" class="img-fluid float-left rounded img-thumbnail"
-             th:data-jdenticon-value="${account.nickname}" width="125" height="125"></svg>
-        <img th:if="${!#strings.isEmpty(account.profileImage)}" class="img-fluid float-left rounded img-thumbnail"
-             th:src="${account.profileImage}" width="125" height="125"/>
+        <svg th:if="${#strings.isEmpty(accountToView.profileImage)}" class="img-fluid float-left rounded img-thumbnail"
+             th:data-jdenticon-value="${accountToView.nickname}" width="125" height="125"></svg>
+        <img th:if="${!#strings.isEmpty(accountToView.profileImage)}" class="img-fluid float-left rounded img-thumbnail"
+             th:src="${accountToView.profileImage}" width="125" height="125"/>
       </div>
+
       <div class="col-8">
-        <h1 class="display-4 " th:text="${account.nickname}">userNickname</h1>
-        <p class="lead" th:if="${!#strings.isEmpty(account.introduction)}" th:text="${account.introduction}">introduction</p>
-        <p class="lead" th:if="${#strings.isEmpty(account.introduction) && isOwner}">
+        <h1 class="display-4 " th:text="${accountToView.nickname}">userNickname</h1>
+        <p class="lead" th:if="${!#strings.isEmpty(accountToView.introduction)}" th:text="${accountToView.introduction}">introduction</p>
+        <p class="lead" th:if="${#strings.isEmpty(accountToView.introduction) && isOwner}">
           소개문을 추가하세요.
         </p>
       </div>
